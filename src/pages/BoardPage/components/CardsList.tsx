@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import type { card } from '../BoardPage.types';
+import type { card } from 'types/BoardPage.types';
 import Card from './Card';
 
 interface IListData {

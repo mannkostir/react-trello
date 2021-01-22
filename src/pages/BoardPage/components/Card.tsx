@@ -1,5 +1,5 @@
 import React from 'react';
-import { card } from '../BoardPage.types';
+import { card } from 'types/BoardPage.types';
 
 interface ICardData {
   card: card;

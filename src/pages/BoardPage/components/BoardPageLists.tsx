@@ -1,5 +1,5 @@
 import React from 'react';
-import type { list } from '../BoardPage.types';
+import type { list } from 'types/BoardPage.types';
 import CardsList from './CardsList';
 
 interface IListsData {

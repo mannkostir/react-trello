@@ -1,6 +1,6 @@
 import React from 'react';
 import './BoardPage.css';
-import type { list } from './BoardPage.types';
+import type { list } from 'types/BoardPage.types';
 import BoardPageLists from './components/BoardPageLists';
 
 // Context wannabe
