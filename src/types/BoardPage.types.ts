@@ -1,17 +1,26 @@
 export type comment = {
-  author: string;
+  readonly id: string;
+  readonly author: string;
   content: string;
-  date: Date;
+  readonly date: Date;
+  readonly cardId: string;
 };
 
 export type card = {
+  readonly id: string;
+  listId: string;
   title: string;
   description?: string;
-  comments?: comment[];
-  activity?: [{ action: string; date: Date }];
+};
+
+export type activity = {
+  readonly id: string;
+  readonly action: string;
+  readonly data: Date;
+  readonly cardId: string;
 };
 
 export type list = {
+  readonly id: string;
   title: string;
-  cards: card[];
 };

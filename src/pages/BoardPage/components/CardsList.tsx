@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
-import type { card } from 'types/BoardPage.types';
+import type { card, comment } from 'types/BoardPage.types';
 import Card from './Card';
 
 interface IListData {
   listTitle: string;
   cards: card[];
+  comments: comment[];
 }
 
-const CardsList = ({ cards, listTitle }: IListData) => {
+const CardsList = ({ cards, listTitle, comments }: IListData) => {
   const [isAddingCard, setIsAddingCard] = useState<boolean>(false);
 
   return (
@@ -23,7 +24,11 @@ const CardsList = ({ cards, listTitle }: IListData) => {
       </header>
       <div className="list__cards">
         {cards.map((card, index) => (
-          <Card card={card} key={index} />
+          <Card
+            card={card}
+            key={index}
+            comments={comments.filter((comment) => comment.cardId === card.id)}
+          />
         ))}
       </div>
       <div className="list__add-card">
