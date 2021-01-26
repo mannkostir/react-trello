@@ -67,7 +67,7 @@ const BoardPageLists = ({ lists, cards, comments, dispatch }: IListsData) => {
             </form>
           ) : (
             <span className="add__toggle" onClick={() => setIsAddingList(true)}>
-              + Add another column
+              + {lists.length ? 'Add another column' : 'Add a column'}
             </span>
           )}
         </div>

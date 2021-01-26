@@ -1,4 +1,4 @@
-import { addCardAC } from 'context/board/boardActions';
+import { addCardAC, changeListTitleAC } from 'context/board/boardActions';
 import React, { FormEvent, useState } from 'react';
 import { useForm } from 'shared/hooks/useForm';
 import type { card, comment } from 'types/BoardPage.types';
@@ -40,6 +40,12 @@ const CardsList = ({
     setIsAddingCard(false);
   };
 
+  const handleTitleEdit = (e: React.FocusEvent<HTMLDivElement>) => {
+    const newTitle: string = e.target.innerText;
+
+    dispatch(changeListTitleAC({ title: newTitle, id: currentListId }));
+  };
+
   return (
     <div className="list__content container-fluid">
       <header className="list__header">
@@ -47,6 +53,7 @@ const CardsList = ({
           className="list__heading editable-heading"
           contentEditable={true}
           suppressContentEditableWarning={true}
+          onBlur={handleTitleEdit}
         >
           <h6>{listTitle}</h6>
         </div>
