@@ -53,6 +53,8 @@
   box-shadow: 0 1px 0 rgb(9 30 66 / 25%);
   padding: 6px 8px;
   cursor: text;
+  background: #fff;
+  overflow: hidden;
 }
 .add__textarea:hover {
   background: #fff;

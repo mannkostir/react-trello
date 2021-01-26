@@ -61,9 +61,11 @@ const CardsList = ({
       <div className="list__cards">
         {cards.map((card, index) => (
           <Card
+            listTitle={listTitle}
             card={card}
             key={index}
             comments={comments.filter((comment) => comment.cardId === card.id)}
+            dispatch={dispatch}
           />
         ))}
       </div>

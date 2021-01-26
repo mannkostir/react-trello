@@ -59,8 +59,61 @@
 .card:hover {
   background: #f4f5f7;
 }
-.card__details {
+.card__info {
   display: flex;
   flex-flow: row wrap;
   gap: 15px;
+}
+.card-details {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+}
+.card-details > * {
+  padding-bottom: 30px;
+}
+.card-details__header-title {
+  resize: none;
+  border: none;
+  height: 32px;
+  color: #172b4d;
+  font-weight: bold;
+  font-size: 20px;
+  overflow: hidden;
+}
+.card-details__list-title {
+  text-decoration: underline;
+}
+.card-details__description-title {
+  resize: none;
+  border: none;
+  height: 32px;
+  color: #172b4d;
+  font-weight: bold;
+  font-size: 20px;
+  overflow: hidden;
+}
+.card-details__activity-title {
+  resize: none;
+  border: none;
+  height: 32px;
+  color: #172b4d;
+  font-weight: bold;
+  font-size: 20px;
+  overflow: hidden;
+}
+.card-details__activity-list {
+  overflow: scroll;
+  max-height: 200px;
+}
+.card-details__comment-textarea {
+  height: 32px;
+  margin-top: 20px;
+}
+.card-details__popup-close-btn {
+  position: absolute;
+  right: 10px;
+  top: 20px;
+  cursor: pointer;
 }
