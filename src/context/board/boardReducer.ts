@@ -22,6 +22,16 @@ export const boardReducer = (state: State, action: BoardAction): State => {
 
       return { ...state, lists: newLists };
     }
+    case BoardActionTypes.CHANGE_LIST_TITLE: {
+      const newLists: typeof state.lists = state.lists.map((list) => {
+        if (list.id === action.payload.id) {
+          list.title = action.payload.title;
+        }
+        return list;
+      });
+
+      return { ...state, lists: newLists };
+    }
     case BoardActionTypes.ADD_CARD: {
       let uuid: string;
 
@@ -63,15 +73,50 @@ export const boardReducer = (state: State, action: BoardAction): State => {
 
       return { ...state, archive: newArchive };
     }
-    case BoardActionTypes.CHANGE_LIST_TITLE: {
-      const newLists: typeof state.lists = state.lists.map((list) => {
-        if (list.id === action.payload.id) {
-          list.title = action.payload.title;
+    case BoardActionTypes.EDIT_CARD: {
+      const newCards: typeof state.cards = state.cards.map((card) => {
+        if (card.id === action.payload.id) {
+          return { ...card, ...action.payload };
         }
-        return list;
+        return card;
       });
 
-      return { ...state, lists: newLists };
+      return { ...state, cards: newCards };
+    }
+    case BoardActionTypes.ADD_COMMENT: {
+      let uuid: string;
+
+      do {
+        uuid = createUUID();
+      } while (state.comments.some((comment) => comment.id === uuid));
+
+      return {
+        ...state,
+        comments: [
+          ...state.comments,
+          { ...action.payload, date: new Date(), id: uuid },
+        ],
+      };
+    }
+    case BoardActionTypes.EDIT_COMMENT: {
+      const newComments = state.comments.map((comment) => {
+        if (comment.id === action.payload.id) {
+          return { ...comment, ...action.payload };
+        }
+        return comment;
+      });
+
+      return { ...state, comments: newComments };
+    }
+    case BoardActionTypes.REMOVE_COMMENT: {
+      const newComments = state.comments.filter((comment) => {
+        if (comment.id === action.payload.id) {
+          return [];
+        }
+        return comment;
+      });
+
+      return { ...state, comments: newComments };
     }
     default:
       return state;
