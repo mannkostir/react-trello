@@ -3,6 +3,7 @@ import React, { FormEvent, useState } from 'react';
 import { useForm } from 'shared/hooks/useForm';
 import type { card, comment } from 'types/BoardPage.types';
 import Card from './Card';
+import 'shared/styles/addComponent.css';
 
 interface IListData {
   listTitle: string;
@@ -59,33 +60,30 @@ const CardsList = ({
           />
         ))}
       </div>
-      <div className="list__add-card">
+      <div className="list__add-component">
         {isAddingCard ? (
-          <form className="add-card__form" onSubmit={handleCardFormSubmit}>
+          <form className="add__form" onSubmit={handleCardFormSubmit}>
             <textarea
-              className="add-card__textarea card"
+              className="add__textarea card"
               name="cardTitle"
               placeholder="Enter a title for this card..."
               onChange={handleChange}
               required={true}
             />
-            <div className="add-card__buttons-wrapper">
-              <button type="submit" className="add-card__submit-btn">
+            <div className="add__buttons-wrapper">
+              <button type="submit" className="add__submit-btn">
                 Add Card
               </button>
               <button
                 onClick={(e) => setIsAddingCard(false)}
-                className="add-card__discard-btn"
+                className="add__discard-btn"
               >
                 X
               </button>
             </div>
           </form>
         ) : (
-          <span
-            className="add-card__link"
-            onClick={(e) => setIsAddingCard(true)}
-          >
+          <span className="add__toggle" onClick={(e) => setIsAddingCard(true)}>
             + {cards.length ? 'Add another card' : 'Add a card'}
           </span>
         )}
