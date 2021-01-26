@@ -4,13 +4,13 @@ import { Action } from 'types/actions.types';
 import { boardReducer } from './board/boardReducer';
 
 let defaultState: State = { lists: [], archive: [], cards: [], comments: [] };
-let defaultDispatch: React.Dispatch<any> = () => null;
+let defaultDispatch: React.Dispatch<any> = () => {};
 
 export const StateContext = createContext(defaultState);
 export const DispatchContext = createContext(defaultDispatch);
 
 interface IStoreProps {
-  children: JSX.Element[];
+  children: JSX.Element[] | JSX.Element;
 }
 
 export const StoreProvider = ({ children }: IStoreProps) => {

@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import { addCardAC } from 'context/board/boardActions';
+import React, { FormEvent, useState } from 'react';
+import { useForm } from 'shared/hooks/useForm';
 import type { card, comment } from 'types/BoardPage.types';
 import Card from './Card';
 
@@ -6,10 +8,36 @@ interface IListData {
   listTitle: string;
   cards: card[];
   comments: comment[];
+  currentListId: string;
+  dispatch: React.Dispatch<any>;
 }
 
-const CardsList = ({ cards, listTitle, comments }: IListData) => {
+const CardsList = ({
+  cards,
+  listTitle,
+  currentListId,
+  comments,
+  dispatch,
+}: IListData) => {
   const [isAddingCard, setIsAddingCard] = useState<boolean>(false);
+
+  const { keyValueMap, handleChange } = useForm();
+
+  const addCard = (cardTitle: string) => {
+    dispatch(addCardAC({ title: cardTitle, listId: currentListId }));
+  };
+
+  const handleCardFormSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const cardTitle = keyValueMap.get('cardTitle');
+
+    if (cardTitle) {
+      addCard(cardTitle);
+    }
+
+    setIsAddingCard(false);
+  };
 
   return (
     <div className="list__content container-fluid">
@@ -33,11 +61,13 @@ const CardsList = ({ cards, listTitle, comments }: IListData) => {
       </div>
       <div className="list__add-card">
         {isAddingCard ? (
-          <form className="add-card__form">
+          <form className="add-card__form" onSubmit={handleCardFormSubmit}>
             <textarea
               className="add-card__textarea card"
               name="cardTitle"
               placeholder="Enter a title for this card..."
+              onChange={handleChange}
+              required={true}
             />
             <div className="add-card__buttons-wrapper">
               <button type="submit" className="add-card__submit-btn">
