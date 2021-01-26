@@ -13,7 +13,7 @@ interface IStoreProps {
   children: JSX.Element[];
 }
 
-const store = ({ children }: IStoreProps) => {
+export const StoreProvider = ({ children }: IStoreProps) => {
   const [state, dispatch] = useReducer(boardReducer, defaultState);
 
   return (
@@ -25,4 +25,4 @@ const store = ({ children }: IStoreProps) => {
   );
 };
 
-export default store;
+export default StoreProvider;
