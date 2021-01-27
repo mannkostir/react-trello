@@ -86,3 +86,12 @@
   padding: 0;
   margin: 0;
 }
+.card-details__card-actions-item {
+  background: rgba(9, 30, 66, 0.04);
+}
+.card-details__card-actions-item:hover {
+  background: rgba(9, 30, 66, 0.08);
+}
+.card-details__card-actions-item:first-child {
+  margin-top: 10px;
+}

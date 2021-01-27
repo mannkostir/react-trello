@@ -1,9 +1,13 @@
-import { addCommentAC, editCardAC } from 'context/board/boardActions';
+import {
+  addCommentAC,
+  editCardAC,
+  removeCardAC,
+} from 'context/board/boardActions';
 import React, { useState } from 'react';
 import PopupWindow from 'shared/components/PopupWindow/PopupWindow';
 import { useForm } from 'shared/hooks/useForm';
 import { card, comment } from 'types/BoardPage.types';
-import '../cardDetailsPopup.css';
+import '../CardDetailsPopup.css';
 
 interface ICardDetailsData {
   card: card;
@@ -45,6 +49,11 @@ const CardDetailsPopup = ({
     dispatch(addCommentAC({ cardId: card.id, content: comment, author: ':(' }));
 
     setIsAddingComment(false);
+  };
+
+  const removeCard = () => {
+    dispatch(removeCardAC({ id: card.id }));
+    onPopupClose();
   };
   return isPopupVisible ? (
     <PopupWindow isVisible={isPopupVisible}>
@@ -149,7 +158,10 @@ const CardDetailsPopup = ({
         <aside className="card-details__sidebar">
           Actions:
           <ul className="card-details__card-actions">
-            <li className="card-details__card-actions-item add__toggle">
+            <li
+              className="card-details__card-actions-item add__toggle"
+              onClick={removeCard}
+            >
               Delete Card
             </li>
           </ul>
