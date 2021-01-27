@@ -3,9 +3,10 @@ import {
   editCardAC,
   removeCardAC,
 } from 'context/board/boardActions';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import PopupWindow from 'shared/components/PopupWindow/PopupWindow';
 import { useForm } from 'shared/hooks/useForm';
+import { useInput } from 'shared/hooks/useInput';
 import { card, comment } from 'types/BoardPage.types';
 import '../CardDetailsPopup.css';
 
@@ -30,6 +31,9 @@ const CardDetailsPopup = ({
   const [isAddingComment, setIsAddingComment] = useState(false);
 
   const { handleChange, keyValueMap } = useForm();
+  const { triggerTextAreaChangeEvent } = useInput();
+
+  const commentInput = useRef<HTMLTextAreaElement>(null);
 
   const handleDescriptionFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -47,6 +51,10 @@ const CardDetailsPopup = ({
     const comment = keyValueMap.get('comment') || '';
 
     dispatch(addCommentAC({ cardId: card.id, content: comment, author: ':(' }));
+
+    if (commentInput.current) {
+      triggerTextAreaChangeEvent(commentInput.current, '');
+    }
 
     setIsAddingComment(false);
   };
@@ -129,6 +137,7 @@ const CardDetailsPopup = ({
                 onBlur={() => setIsAddingComment(false)}
                 onChange={handleChange}
                 data-isEditing={isAddingComment}
+                ref={commentInput}
               />
               <div className="add_buttons-wrapper">
                 <button
