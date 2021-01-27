@@ -1,0 +1,88 @@
+.card-details {
+  padding: 20px;
+  display: grid;
+  grid-template-columns: 1fr 20%;
+  grid-template-rows: 20% 1fr;
+  column-gap: 20px;
+}
+.card-details__header {
+  grid-column: 1/3;
+  grid-row: 1;
+}
+.card-details__main {
+  grid-column: 1;
+  grid-row: 2;
+}
+.card-details__main > * {
+  margin-bottom: 30px;
+}
+.card-details__sidebar {
+  grid-column: 2;
+  grid-row: 2;
+}
+.card-details__card-title {
+  resize: none;
+  border: none;
+  height: 32px;
+  color: #172b4d;
+  font-weight: bold;
+  font-size: 20px;
+  overflow: hidden;
+  background: transparent;
+}
+.card-details__list-title {
+  text-decoration: underline;
+}
+.card-details__description-title {
+  resize: none;
+  border: none;
+  height: 32px;
+  color: #172b4d;
+  font-weight: bold;
+  font-size: 20px;
+  overflow: hidden;
+}
+.card-details__activity-title {
+  resize: none;
+  border: none;
+  height: 32px;
+  color: #172b4d;
+  font-weight: bold;
+  font-size: 20px;
+  overflow: hidden;
+}
+.card-details__activity-list {
+  margin-top: 30px;
+  list-style: none;
+}
+.card-details__comment {
+  margin-bottom: 15px;
+}
+.card-details__comment:last-child {
+  margin-bottom: 0;
+}
+.card-details__comment-textarea {
+  height: 32px;
+  margin-top: 20px;
+  transition: 0.2s ease;
+}
+.card-details__comment-textarea[data-isEditing='true'] {
+  height: 102px;
+}
+.card-details__comment-author {
+  font-weight: bold;
+}
+.card-details__comment-content {
+  background: #f4f4f4;
+}
+.card-details__popup-close-btn {
+  position: absolute;
+  right: 10px;
+  top: 20px;
+  cursor: pointer;
+}
+.card-details__card-actions {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
