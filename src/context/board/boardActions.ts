@@ -6,7 +6,6 @@ export enum BoardActionTypes {
   CHANGE_LIST_TITLE = 'CHANGE_LIST_TITLE',
   REMOVE_LIST = 'REMOVE_LIST',
   ADD_CARD = 'ADD_CARD',
-  ARCHIVE_CARD = 'ARCHIVE_CARD',
   REMOVE_CARD = 'REMOVE_CARD',
   EDIT_CARD = 'EDIT_CARD',
   ADD_COMMENT = 'ADD_COMMENT',
@@ -42,9 +41,6 @@ export const removeListAC = (listData: Pick<list, 'id'>) =>
 export const addCardAC = (cardData: Pick<card, 'title' | 'listId'>) =>
   createAction(BoardActionTypes.ADD_CARD, cardData);
 
-export const archiveCardAC = (cardData: Pick<card, 'id'>) =>
-  createAction(BoardActionTypes.ARCHIVE_CARD, cardData);
-
 export const removeCardAC = (cardData: Pick<card, 'id'>) =>
   createAction(BoardActionTypes.REMOVE_CARD, cardData);
 
@@ -67,7 +63,6 @@ export type BoardAction =
   | ReturnType<typeof changeListTitleAC>
   | ReturnType<typeof removeListAC>
   | ReturnType<typeof addCardAC>
-  | ReturnType<typeof archiveCardAC>
   | ReturnType<typeof removeCardAC>
   | ReturnType<typeof editCardAC>
   | ReturnType<typeof addCommentAC>

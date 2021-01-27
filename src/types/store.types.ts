@@ -5,6 +5,5 @@ export type State = {
   lists: list[];
   cards: card[];
   comments: comment[];
-  archive: card[];
   users: user[];
 };

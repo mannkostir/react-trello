@@ -46,26 +46,6 @@ export const boardReducer = (state: State, action: BoardAction): State => {
 
       return { ...state, cards: newCards };
     }
-    case BoardActionTypes.ARCHIVE_CARD: {
-      let archivedCard: card | undefined;
-
-      const newCards: typeof state.cards = state.cards.flatMap((card) => {
-        if (card.id === action.payload.id) {
-          archivedCard = card;
-          return [];
-        } else {
-          return card;
-        }
-      });
-
-      const newArchive: typeof state.archive = [...state.archive];
-
-      if (archivedCard) {
-        newArchive.push(archivedCard);
-      }
-
-      return { ...state, cards: newCards, archive: newArchive };
-    }
     case BoardActionTypes.REMOVE_CARD: {
       const newCards: typeof state.cards = state.cards.filter(
         (card) => card.id !== action.payload.id

@@ -5,7 +5,6 @@ import { boardReducer } from './board/boardReducer';
 
 let defaultState: State = {
   lists: [],
-  archive: [],
   cards: [],
   comments: [],
   users: [],
