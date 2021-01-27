@@ -2,8 +2,8 @@ import { Action, ActionWithPayload } from 'types/actions.types';
 import { user } from 'types/BoardPage.types';
 
 export enum UserActionTypes {
-  ADD_USER = 'ADD_USER',
-  REMOVE_USER = 'REMOVE_USER',
+  SIGN_IN = 'SIGN_IN',
+  SIGN_OUT = 'SIGN_OUT',
 }
 
 function createAction<T extends string>(type: T): Action<T>;
@@ -18,12 +18,12 @@ function createAction<T extends string, P extends object>(
   return { type, ...(payload ? { payload } : {}) };
 }
 
-export const addUserAC = (userData: user) =>
-  createAction(UserActionTypes.ADD_USER, userData);
+export const signInAC = (userData: user) =>
+  createAction(UserActionTypes.SIGN_IN, userData);
 
-export const removeUserAC = (userData: Pick<user, 'id'>) =>
-  createAction(UserActionTypes.REMOVE_USER, userData);
+export const signOutAC = (userData: Pick<user, 'id'>) =>
+  createAction(UserActionTypes.SIGN_OUT, userData);
 
 export type UserAction =
-  | ReturnType<typeof addUserAC>
-  | ReturnType<typeof removeUserAC>;
+  | ReturnType<typeof signInAC>
+  | ReturnType<typeof signOutAC>;

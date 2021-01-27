@@ -1,7 +1,7 @@
 import { addCardAC, changeListTitleAC } from 'context/board/boardActions';
 import React, { FormEvent, useState } from 'react';
 import { useForm } from 'shared/hooks/useForm';
-import type { card, comment } from 'types/BoardPage.types';
+import type { card, comment, user } from 'types/BoardPage.types';
 import Card from './Card';
 import 'shared/styles/addComponent.css';
 
@@ -11,6 +11,7 @@ interface IListData {
   comments: comment[];
   currentListId: string;
   dispatch: React.Dispatch<any>;
+  currentUser: user | null;
 }
 
 const CardsList = ({
@@ -19,6 +20,7 @@ const CardsList = ({
   currentListId,
   comments,
   dispatch,
+  currentUser,
 }: IListData) => {
   const [isAddingCard, setIsAddingCard] = useState<boolean>(false);
 
@@ -66,6 +68,7 @@ const CardsList = ({
             key={index}
             comments={comments.filter((comment) => comment.cardId === card.id)}
             dispatch={dispatch}
+            currentUser={currentUser}
           />
         ))}
       </div>

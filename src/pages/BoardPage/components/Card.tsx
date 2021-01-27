@@ -2,17 +2,24 @@ import { addCommentAC, editCardAC } from 'context/board/boardActions';
 import React, { useEffect, useState } from 'react';
 import PopupWindow from 'shared/components/PopupWindow/PopupWindow';
 import { useForm } from 'shared/hooks/useForm';
-import { card, comment } from 'types/BoardPage.types';
+import { card, comment, user } from 'types/BoardPage.types';
 import CardDetailsPopup from './CardDetailsPopup';
 
 interface ICardData {
   card: card;
   comments: comment[];
   listTitle: string;
+  currentUser: user | null;
   dispatch: React.Dispatch<any>;
 }
 
-const Card = ({ card, comments, listTitle, dispatch }: ICardData) => {
+const Card = ({
+  card,
+  comments,
+  listTitle,
+  dispatch,
+  currentUser,
+}: ICardData) => {
   const [isPopupVisible, setIsPopupVisible] = useState(false);
 
   const togglePopup = () => setIsPopupVisible((isVisible) => !isVisible);
@@ -25,6 +32,7 @@ const Card = ({ card, comments, listTitle, dispatch }: ICardData) => {
         listTitle={listTitle}
         isPopupVisible={isPopupVisible}
         onPopupClose={() => setIsPopupVisible(false)}
+        currentUser={currentUser}
         dispatch={dispatch}
       />
       <div className="card" onClick={togglePopup}>

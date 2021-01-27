@@ -4,10 +4,10 @@ import BoardPageLists from './components/BoardPageLists';
 import { useSelector } from 'context/useSelector';
 import { useDispatch } from 'context/useDispatch';
 import { addCardAC, addListAC } from 'context/board/boardActions';
-import { card } from 'types/BoardPage.types';
+import { card, user } from 'types/BoardPage.types';
 import PopupWindow from 'shared/components/PopupWindow/PopupWindow';
 import { useForm } from 'shared/hooks/useForm';
-import { addUserAC } from 'context/user/userActions';
+import { signInAC } from 'context/auth/authActions';
 
 const createUUID = () => {
   return window.crypto.getRandomValues(new Uint32Array(1))[0].toString(16);
@@ -44,8 +44,8 @@ const BoardPageContainer = () => {
   const state = useSelector((state) => state);
   const dispatch = useDispatch();
 
-  const [cachedUserId, setCachedUserId] = useState(
-    localStorage.getItem('cachedUserId')
+  const [cachedUser, setCachedUser] = useState(
+    localStorage.getItem('cachedUser')
   );
 
   const { handleChange, keyValueMap } = useForm();
@@ -55,15 +55,23 @@ const BoardPageContainer = () => {
 
     let uuid = createUUID();
 
-    localStorage.setItem('cachedUserId', uuid);
-    setCachedUserId(uuid);
-
     const username = keyValueMap.get('username');
 
     if (username) {
-      dispatch(addUserAC({ username, id: uuid }));
+      const user: user = { id: uuid, username };
+      dispatch(signInAC({ username, id: uuid }));
+      localStorage.setItem('cachedUser', JSON.stringify(user));
+      setCachedUser(JSON.stringify(user));
     }
   };
+
+  useEffect(() => {
+    if (!cachedUser) return;
+
+    const user = JSON.parse(cachedUser);
+
+    dispatch(signInAC(user));
+  }, [cachedUser]);
 
   useEffect(() => {
     dispatch(addListAC({ title: 'To Do' }));
@@ -73,7 +81,7 @@ const BoardPageContainer = () => {
   }, []);
   return (
     <section className="board-page-container container-fluid">
-      <PopupWindow isVisible={!cachedUserId}>
+      <PopupWindow isVisible={!cachedUser}>
         <div className="first-visit">
           <form className="first-visit__form" onSubmit={handleUserFormSubmit}>
             <label className="first-visit__input-label" htmlFor="usernameInput">
@@ -93,12 +101,7 @@ const BoardPageContainer = () => {
           </form>
         </div>
       </PopupWindow>
-      <BoardPageLists
-        lists={state.lists}
-        cards={state.cards}
-        comments={state.comments}
-        dispatch={dispatch}
-      />
+      <BoardPageLists state={state} dispatch={dispatch} />
     </section>
   );
 };

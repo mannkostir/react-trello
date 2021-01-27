@@ -1,4 +1,6 @@
+import { defaultState } from 'context/store';
 import { card } from 'types/BoardPage.types';
+import { Reducer } from 'types/reducers.types';
 import { State } from 'types/store.types';
 import { BoardAction, BoardActionTypes } from './boardActions';
 
@@ -6,7 +8,10 @@ const createUUID = () => {
   return window.crypto.getRandomValues(new Uint32Array(1))[0].toString(16);
 };
 
-export const boardReducer = (state: State, action: BoardAction): State => {
+export const boardReducer = (
+  state = defaultState.board,
+  action: BoardAction
+): typeof defaultState.board => {
   switch (action.type) {
     case BoardActionTypes.ADD_LIST: {
       let uuid: string;

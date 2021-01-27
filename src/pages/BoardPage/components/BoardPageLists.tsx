@@ -1,18 +1,20 @@
 import React, { FormEvent, useState } from 'react';
-import type { card, list, comment } from 'types/BoardPage.types';
+import type { card, list, comment, user } from 'types/BoardPage.types';
 import CardsList from './CardsList';
 import 'shared/styles/addComponent.css';
 import { useForm } from 'shared/hooks/useForm';
 import { addListAC } from 'context/board/boardActions';
+import { State } from 'types/store.types';
 
 interface IListsData {
-  lists: list[];
-  cards: card[];
-  comments: comment[];
+  state: State;
   dispatch: React.Dispatch<any>;
 }
 
-const BoardPageLists = ({ lists, cards, comments, dispatch }: IListsData) => {
+const BoardPageLists = ({ state, dispatch }: IListsData) => {
+  const { lists, cards, comments } = state.board;
+  const { currentUser } = state.auth;
+
   const [isAddingList, setIsAddingList] = useState(false);
 
   const { handleChange, keyValueMap } = useForm();
@@ -39,6 +41,7 @@ const BoardPageLists = ({ lists, cards, comments, dispatch }: IListsData) => {
             cards={cards.filter((card) => card.listId === list.id)}
             dispatch={dispatch}
             comments={comments}
+            currentUser={currentUser}
           />
         </div>
       ))}

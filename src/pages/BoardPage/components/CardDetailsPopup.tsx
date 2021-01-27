@@ -7,7 +7,7 @@ import React, { useRef, useState } from 'react';
 import PopupWindow from 'shared/components/PopupWindow/PopupWindow';
 import { useForm } from 'shared/hooks/useForm';
 import { useInput } from 'shared/hooks/useInput';
-import { card, comment } from 'types/BoardPage.types';
+import { card, comment, user } from 'types/BoardPage.types';
 import '../CardDetailsPopup.css';
 
 interface ICardDetailsData {
@@ -15,6 +15,7 @@ interface ICardDetailsData {
   listTitle: string;
   comments: comment[];
   isPopupVisible: boolean;
+  currentUser: user | null;
   onPopupClose: () => void;
   dispatch: React.Dispatch<any>;
 }
@@ -24,6 +25,7 @@ const CardDetailsPopup = ({
   listTitle,
   comments,
   isPopupVisible,
+  currentUser,
   onPopupClose = () => {},
   dispatch,
 }: ICardDetailsData) => {
@@ -50,7 +52,17 @@ const CardDetailsPopup = ({
 
     const comment = keyValueMap.get('comment') || '';
 
-    dispatch(addCommentAC({ cardId: card.id, content: comment, author: ':(' }));
+    console.log(currentUser);
+
+    if (currentUser?.username) {
+      dispatch(
+        addCommentAC({
+          cardId: card.id,
+          content: comment,
+          author: currentUser.username,
+        })
+      );
+    }
 
     if (commentInput.current) {
       triggerTextAreaChangeEvent(commentInput.current, '');
