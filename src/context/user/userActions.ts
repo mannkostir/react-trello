@@ -18,7 +18,7 @@ function createAction<T extends string, P extends object>(
   return { type, ...(payload ? { payload } : {}) };
 }
 
-export const addUserAC = (userData: Pick<user, 'username'>) =>
+export const addUserAC = (userData: user) =>
   createAction(UserActionTypes.ADD_USER, userData);
 
 export const removeUserAC = (userData: Pick<user, 'id'>) =>

@@ -12,7 +12,7 @@ export const userReducer = (state: State, action: UserAction): State => {
 
       const newUsers: typeof state.users = [
         ...state.users,
-        { id: uuid, username: action.payload.username },
+        { id: action.payload.id || uuid, username: action.payload.username },
       ];
 
       return { ...state, users: newUsers };

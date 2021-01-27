@@ -1,3 +1,13 @@
+.first-visit__form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.first-visit__form > * {
+  margin-bottom: 20px;
+}
+
 .board-page-container {
   display: flex;
   flex-direction: column;
