@@ -14,7 +14,9 @@
 .popup {
   position: relative;
   z-index: 20;
-  background: #fff;
+  background: #f4f5f7;
   margin-top: 40px;
   margin-bottom: 60px;
+  width: 60%;
+  max-width: 968px;
 }

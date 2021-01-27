@@ -43,96 +43,113 @@ const Card = ({ card, comments, listTitle, dispatch }: ICardData) => {
     <>
       {isPopupVisible ? (
         <PopupWindow isVisible={isPopupVisible}>
-          <span
-            className="card-details__popup-close-btn"
-            onClick={() => setIsPopupVisible(false)}
-          >
-            CLOSE
-          </span>
           <div className="card-details">
-            <div className="card-details__header">
-              <textarea
-                className="card-details__header-title"
-                defaultValue={card.title}
-              />
-              <div className="card-details__list-data">
-                in list{' '}
-                <span className="card-details__list-title">{listTitle}</span>
-              </div>
-            </div>
-            <div className="card-details__description">
-              <span className="card-details__description-title">
-                Description
-              </span>
-              <div className="card-details__description-content">
-                {isAddingDescription ? (
-                  <form
-                    className="add__form"
-                    onSubmit={(e) => handleDescriptionFormSubmit(e)}
-                  >
-                    <textarea
-                      className="add__textarea"
-                      name="cardDescription"
-                      onChange={handleChange}
-                      defaultValue={card.description}
-                    />
-                    <div className="add__buttons-wrapper">
-                      <button type="submit" className="add__submit-btn">
-                        Save
-                      </button>
-                      <button
-                        className="add__discard-btn"
-                        onClick={() => setIsAddingDescription(false)}
-                      >
-                        X
-                      </button>
-                    </div>
-                  </form>
-                ) : (
-                  <div
-                    className="add__toggle"
-                    onClick={() => setIsAddingDescription(true)}
-                  >
-                    {card.description
-                      ? card.description
-                      : 'Add a more detailed description...'}
-                  </div>
-                )}
-              </div>
-            </div>
-            <div className="card-details__activity">
-              <div className="card-details__activity-title">Activity</div>
-              <form
-                className="card-details__comment"
-                onSubmit={handleCommentFormSubmit}
-              >
+            <header className="card-details__header">
+              <div className="card-details__header-content">
                 <textarea
-                  className="card-details__comment-textarea add__textarea"
-                  name="comment"
-                  placeholder="Write a comment"
-                  onFocus={() => setIsAddingComment(true)}
-                  onBlur={() => setIsAddingComment(false)}
-                  onChange={handleChange}
+                  className="card-details__card-title"
+                  defaultValue={card.title}
                 />
-                <div className="add_buttons-wrapper">
-                  <button
-                    type="submit"
-                    className="card-details__submit-btn add__submit-btn"
-                  >
-                    Save
-                  </button>
+                <div className="card-details__list-data">
+                  in list{' '}
+                  <span className="card-details__list-title">{listTitle}</span>
                 </div>
-              </form>
-              <ul className="card-details__activity-list">
-                {comments.map((comment) => (
-                  <li key={comment.id}>
-                    <span>Author: {comment.author}</span>
-                    <br />
-                    <span>Comment: {comment.content}</span>
-                  </li>
-                ))}
+              </div>
+              <span
+                className="card-details__popup-close-btn"
+                onClick={() => setIsPopupVisible(false)}
+              >
+                CLOSE
+              </span>
+            </header>
+            <section className="card-details__main">
+              <div className="card-details__description">
+                <span className="card-details__description-title">
+                  Description
+                </span>
+                <div className="card-details__description-content">
+                  {isAddingDescription ? (
+                    <form
+                      className="add__form"
+                      onSubmit={(e) => handleDescriptionFormSubmit(e)}
+                    >
+                      <textarea
+                        className="add__textarea"
+                        name="cardDescription"
+                        onChange={handleChange}
+                        defaultValue={card.description}
+                      />
+                      <div className="add__buttons-wrapper">
+                        <button type="submit" className="add__submit-btn">
+                          Save
+                        </button>
+                        <button
+                          className="add__discard-btn"
+                          onClick={() => setIsAddingDescription(false)}
+                        >
+                          X
+                        </button>
+                      </div>
+                    </form>
+                  ) : (
+                    <div
+                      className="add__toggle"
+                      onClick={() => setIsAddingDescription(true)}
+                    >
+                      {card.description
+                        ? card.description
+                        : 'Add a more detailed description...'}
+                    </div>
+                  )}
+                </div>
+              </div>
+              <div className="card-details__activity">
+                <div className="card-details__activity-title">Activity</div>
+                <form
+                  className="card-details__comment"
+                  onSubmit={handleCommentFormSubmit}
+                >
+                  <textarea
+                    className="card-details__comment-textarea add__textarea"
+                    name="comment"
+                    placeholder="Write a comment"
+                    onFocus={() => setIsAddingComment(true)}
+                    onBlur={() => setIsAddingComment(false)}
+                    onChange={handleChange}
+                  />
+                  <div className="add_buttons-wrapper">
+                    <button
+                      type="submit"
+                      className="card-details__submit-btn add__submit-btn"
+                    >
+                      Save
+                    </button>
+                  </div>
+                </form>
+                <ul className="card-details__activity-list">
+                  {comments.map((comment) => (
+                    <li key={comment.id} className="card-details__comment">
+                      <header className="card-details__comment-header">
+                        <span className="card-details__comment-author">
+                          {comment.author}
+                        </span>
+                      </header>
+                      <div className="card-details__comment-content">
+                        {comment.content}
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </section>
+            <aside className="card-details__sidebar">
+              Actions:
+              <ul className="card-details__card-actions">
+                <li className="card-details__card-actions-item add__toggle">
+                  Delete Card
+                </li>
               </ul>
-            </div>
+            </aside>
           </div>
         </PopupWindow>
       ) : null}
