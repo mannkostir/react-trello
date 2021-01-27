@@ -8,6 +8,7 @@ import { card, user } from 'types/BoardPage.types';
 import PopupWindow from 'shared/components/PopupWindow/PopupWindow';
 import { useForm } from 'shared/hooks/useForm';
 import { signInAC } from 'context/auth/authActions';
+import { addUserAC } from 'context/users/usersActions';
 
 const createUUID = () => {
   return window.crypto.getRandomValues(new Uint32Array(1))[0].toString(16);
@@ -71,13 +72,14 @@ const BoardPageContainer = () => {
     const user = JSON.parse(cachedUser);
 
     dispatch(signInAC(user));
-  }, [cachedUser]);
+  }, []);
 
   useEffect(() => {
     dispatch(addListAC({ title: 'To Do' }));
     dispatch(addListAC({ title: 'In Progress' }));
     dispatch(addListAC({ title: 'Testing' }));
     dispatch(addListAC({ title: 'Done' }));
+    dispatch(addUserAC({ id: 'a', username: 'asd' }));
   }, []);
   return (
     <section className="board-page-container container-fluid">

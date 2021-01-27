@@ -1,5 +1,4 @@
 import React, { FormEvent, useState } from 'react';
-import type { card, list, comment, user } from 'types/BoardPage.types';
 import CardsList from './CardsList';
 import 'shared/styles/addComponent.css';
 import { useForm } from 'shared/hooks/useForm';
@@ -12,9 +11,6 @@ interface IListsData {
 }
 
 const BoardPageLists = ({ state, dispatch }: IListsData) => {
-  const { lists, cards, comments } = state.board;
-  const { currentUser } = state.auth;
-
   const [isAddingList, setIsAddingList] = useState(false);
 
   const { handleChange, keyValueMap } = useForm();
@@ -33,15 +29,15 @@ const BoardPageLists = ({ state, dispatch }: IListsData) => {
 
   return (
     <div className="board__lists row">
-      {lists.map((list) => (
+      {state.board.lists.map((list) => (
         <div className="board__list column col" key={list.id}>
           <CardsList
             listTitle={list.title}
             currentListId={list.id}
-            cards={cards.filter((card) => card.listId === list.id)}
+            cards={state.board.cards.filter((card) => card.listId === list.id)}
             dispatch={dispatch}
-            comments={comments}
-            currentUser={currentUser}
+            comments={state.board.comments}
+            currentUser={state.auth.currentUser}
           />
         </div>
       ))}
@@ -70,7 +66,8 @@ const BoardPageLists = ({ state, dispatch }: IListsData) => {
             </form>
           ) : (
             <span className="add__toggle" onClick={() => setIsAddingList(true)}>
-              + {lists.length ? 'Add another column' : 'Add a column'}
+              +{' '}
+              {state.board.lists.length ? 'Add another column' : 'Add a column'}
             </span>
           )}
         </div>

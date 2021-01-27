@@ -6,6 +6,7 @@ import { boardReducer } from './board/boardReducer';
 import { signInAC } from './auth/authActions';
 import { usersReducer } from './users/usersReducer';
 import { authReducer } from './auth/authReducer';
+import { card, comment, list, user } from 'types/BoardPage.types';
 
 export let defaultState: State = {
   board: {
@@ -13,11 +14,14 @@ export let defaultState: State = {
     cards: [],
     comments: [],
   },
-  users: [],
+  users: {
+    users: [],
+  },
   auth: {
     currentUser: null,
   },
 };
+
 let defaultDispatch: React.Dispatch<any> = () => {};
 
 export const StateContext = createContext(defaultState);
@@ -37,11 +41,23 @@ export type StateFromReducersMapObject<M> = M extends ReducersMapObject
 
 const combineReducers = (reducers: ReducersMapObject) => {
   const reducerKeys = Object.keys(reducers);
+  const finalReducers: ReducersMapObject = {};
+
+  for (let i = 0; i < reducerKeys.length; i++) {
+    const key = reducerKeys[i];
+
+    if (typeof reducers[key] === 'function') {
+      finalReducers[key] = reducers[key];
+    }
+  }
+
+  const finalReducerKeys = Object.keys(finalReducers);
 
   return function combine(
     state: StateFromReducersMapObject<typeof reducers> = {},
     action: AnyAction
   ) {
+    let hasChanged = false;
     const nextState: typeof state = {};
 
     for (let i = 0; i < reducerKeys.length; i++) {
@@ -50,10 +66,13 @@ const combineReducers = (reducers: ReducersMapObject) => {
       const previousStateForKey = state[key];
       const nextStateForKey = reducer(previousStateForKey, action);
       nextState[key] = nextStateForKey;
+      hasChanged = hasChanged || nextStateForKey !== previousStateForKey;
     }
+    hasChanged =
+      hasChanged || finalReducerKeys.length !== Object.keys(state).length;
     // !!!
     // Just a temporary
-    return nextState as State;
+    return hasChanged ? (nextState as State) : (state as State);
   };
 };
 

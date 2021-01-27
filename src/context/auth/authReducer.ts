@@ -1,5 +1,5 @@
-import { State } from 'types/store.types';
-import { UserAction, UserActionTypes } from './authActions';
+import { IAuthState } from 'types/store.types';
+import { AuthAction, AuthActionTypes } from './authActions';
 import { defaultState } from '../store';
 
 const createUUID = () => {
@@ -7,12 +7,11 @@ const createUUID = () => {
 };
 
 export const authReducer = (
-  state = defaultState.auth,
-  action: UserAction
-): typeof defaultState.auth => {
-  console.log(action.type);
+  state: IAuthState,
+  action: AuthAction
+): IAuthState => {
   switch (action.type) {
-    case UserActionTypes.SIGN_IN: {
+    case AuthActionTypes.SIGN_IN: {
       let uuid = createUUID();
 
       const newCurrentUser: typeof state.currentUser = {
@@ -22,11 +21,13 @@ export const authReducer = (
 
       return { ...state, currentUser: newCurrentUser };
     }
-    case UserActionTypes.SIGN_OUT: {
+    case AuthActionTypes.SIGN_OUT: {
       const newCurrentUser: typeof state.currentUser =
         defaultState.auth.currentUser;
 
       return { ...state, currentUser: newCurrentUser };
     }
+    default:
+      return state;
   }
 };

@@ -52,8 +52,6 @@ const CardDetailsPopup = ({
 
     const comment = keyValueMap.get('comment') || '';
 
-    console.log(currentUser);
-
     if (currentUser?.username) {
       dispatch(
         addCommentAC({
