@@ -67,11 +67,11 @@ export const boardReducer = (state: State, action: BoardAction): State => {
       return { ...state, cards: newCards, archive: newArchive };
     }
     case BoardActionTypes.REMOVE_CARD: {
-      const newArchive: typeof state.archive = state.archive.filter(
-        (card) => card.id === action.payload.id
+      const newCards: typeof state.cards = state.cards.filter(
+        (card) => card.id !== action.payload.id
       );
 
-      return { ...state, archive: newArchive };
+      return { ...state, cards: newCards };
     }
     case BoardActionTypes.EDIT_CARD: {
       const newCards: typeof state.cards = state.cards.map((card) => {
