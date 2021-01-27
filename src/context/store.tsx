@@ -3,7 +3,13 @@ import { State } from 'types/store.types';
 import { Action } from 'types/actions.types';
 import { boardReducer } from './board/boardReducer';
 
-let defaultState: State = { lists: [], archive: [], cards: [], comments: [] };
+let defaultState: State = {
+  lists: [],
+  archive: [],
+  cards: [],
+  comments: [],
+  users: [],
+};
 let defaultDispatch: React.Dispatch<any> = () => {};
 
 export const StateContext = createContext(defaultState);

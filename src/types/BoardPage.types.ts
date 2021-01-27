@@ -24,3 +24,8 @@ export type list = {
   readonly id: string;
   title: string;
 };
+
+export type user = {
+  readonly id: string;
+  username: string;
+};
