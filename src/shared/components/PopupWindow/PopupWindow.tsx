@@ -7,7 +7,11 @@ const PopupWindow = ({
   children: JSX.Element | JSX.Element[] | string;
   isVisible: boolean;
 }) => {
-  return <div className="popup">{children}</div>;
+  return (
+    <div className="overlay">
+      <div className="popup">{children}</div>
+    </div>
+  );
 };
 
 export default PopupWindow;

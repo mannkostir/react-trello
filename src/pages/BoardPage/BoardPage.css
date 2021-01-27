@@ -18,7 +18,7 @@
 
 .list__content {
   align-items: center;
-  max-height: 100%;
+  /* max-height: 100%; */
   background: #ebecf0;
   padding: 10px;
 }
@@ -104,8 +104,8 @@
   overflow: hidden;
 }
 .card-details__activity-list {
-  overflow: scroll;
-  max-height: 200px;
+  /* overflow: scroll; */
+  /* max-height: 200px; */
 }
 .card-details__comment-textarea {
   height: 32px;
