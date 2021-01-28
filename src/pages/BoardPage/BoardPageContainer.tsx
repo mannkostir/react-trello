@@ -73,14 +73,6 @@ const BoardPageContainer = () => {
 
     dispatch(signInAC(user));
   }, []);
-
-  useEffect(() => {
-    dispatch(addListAC({ title: 'To Do' }));
-    dispatch(addListAC({ title: 'In Progress' }));
-    dispatch(addListAC({ title: 'Testing' }));
-    dispatch(addListAC({ title: 'Done' }));
-    dispatch(addUserAC({ id: 'a', username: 'asd' }));
-  }, []);
   return (
     <section className="board-page-container container-fluid">
       <PopupWindow isVisible={!cachedUser}>

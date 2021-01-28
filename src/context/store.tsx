@@ -24,7 +24,12 @@ const defaultAuth: IAuthState | null = localStorage.getItem('authState')
 
 export let defaultState: State = {
   board: defaultBoard || {
-    lists: [],
+    lists: [
+      { id: '1', title: 'To Do' },
+      { id: '2', title: 'In Progress' },
+      { id: '3', title: 'Testing' },
+      { id: '4', title: 'Done' },
+    ],
     cards: [],
     comments: [],
   },
