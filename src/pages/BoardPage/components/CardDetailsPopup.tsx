@@ -10,7 +10,7 @@ import PopupWindow from 'shared/components/PopupWindow/PopupWindow';
 import { useForm } from 'shared/hooks/useForm';
 import { useInput } from 'shared/hooks/useInput';
 import { card, comment, user } from 'types/BoardPage.types';
-import '../CardDetailsPopup.css';
+import '../cardDetailsPopup.css';
 
 interface ICardDetailsData {
   card: card;
