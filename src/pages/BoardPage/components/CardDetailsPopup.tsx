@@ -39,6 +39,13 @@ const CardDetailsPopup = ({
   const { triggerTextAreaChangeEvent } = useInput();
 
   const commentInput = useRef<HTMLTextAreaElement>(null);
+  const descriptionTextArea = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    if (!descriptionTextArea.current) return;
+
+    if (isAddingDescription) descriptionTextArea.current.select();
+  }, [isAddingDescription]);
 
   useEffect(() => {
     const ifEscPressedAction = (e: KeyboardEvent) => {
@@ -128,6 +135,7 @@ const CardDetailsPopup = ({
               onChange={handleChange}
               onBlur={changeCardTitle}
               defaultValue={card.title}
+              onClick={(e) => e.currentTarget.select()}
             />
             <div className="card-details__list-data">
               in list{' '}
@@ -155,6 +163,7 @@ const CardDetailsPopup = ({
                     name="cardDescription"
                     onChange={handleChange}
                     defaultValue={card.description}
+                    ref={descriptionTextArea}
                   />
                   <div className="add__buttons-wrapper">
                     <button type="submit" className="add__submit-btn">

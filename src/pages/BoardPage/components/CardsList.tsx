@@ -48,6 +48,18 @@ const CardsList = ({
     dispatch(changeListTitleAC({ title: newTitle, id: currentListId }));
   };
 
+  const selectAllText = (e: React.MouseEvent<HTMLDivElement>) => {
+    const range = document.createRange();
+    range.selectNodeContents(e.currentTarget);
+
+    const selection = window.getSelection();
+
+    if (selection) {
+      selection?.removeAllRanges();
+      selection?.addRange(range);
+    }
+  };
+
   return (
     <div className="list__content container-fluid">
       <header className="list__header">
@@ -56,6 +68,7 @@ const CardsList = ({
           contentEditable={true}
           suppressContentEditableWarning={true}
           onBlur={handleTitleEdit}
+          onClick={selectAllText}
         >
           <h6>{listTitle}</h6>
         </div>
