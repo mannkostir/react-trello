@@ -73,7 +73,17 @@
   font-weight: bold;
 }
 .card-details__comment-content {
+  resize: none;
   background: #f4f4f4;
+}
+.card-details__comment-actions > button {
+  background: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+.card-details__comment-actions > button:hover {
+  text-decoration: underline;
 }
 .card-details__popup-close-btn {
   position: absolute;

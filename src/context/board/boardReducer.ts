@@ -91,15 +91,14 @@ export const boardReducer = (
         return comment;
       });
 
+      console.log(newComments);
+
       return { ...state, comments: newComments };
     }
     case BoardActionTypes.REMOVE_COMMENT: {
-      const newComments = state.comments.filter((comment) => {
-        if (comment.id === action.payload.id) {
-          return [];
-        }
-        return comment;
-      });
+      const newComments = state.comments.filter(
+        (comment) => comment.id !== action.payload.id
+      );
 
       return { ...state, comments: newComments };
     }

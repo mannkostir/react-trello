@@ -1,7 +1,9 @@
 import {
   addCommentAC,
   editCardAC,
+  editCommentAC,
   removeCardAC,
+  removeCommentAC,
 } from 'context/board/boardActions';
 import React, { useRef, useState } from 'react';
 import PopupWindow from 'shared/components/PopupWindow/PopupWindow';
@@ -31,6 +33,7 @@ const CardDetailsPopup = ({
 }: ICardDetailsData) => {
   const [isAddingDescription, setIsAddingDescription] = useState(false);
   const [isAddingComment, setIsAddingComment] = useState(false);
+  const [editingComments, setEditingComments] = useState<string[]>([]);
 
   const { handleChange, keyValueMap } = useForm();
   const { triggerTextAreaChangeEvent } = useInput();
@@ -69,9 +72,30 @@ const CardDetailsPopup = ({
     setIsAddingComment(false);
   };
 
+  const handleCommentEditFormSubmit = (
+    e: React.FormEvent<HTMLFormElement>,
+    commentId: string
+  ) => {
+    e.preventDefault();
+
+    const newComment = keyValueMap.get('newComment') || '';
+
+    if (newComment) {
+      dispatch(editCommentAC({ id: commentId, content: newComment }));
+    }
+
+    setEditingComments((comments) =>
+      comments.filter((comment) => comment !== commentId)
+    );
+  };
+
   const removeCard = () => {
     dispatch(removeCardAC({ id: card.id }));
     onPopupClose();
+  };
+
+  const deleteComment = (commentId: string) => {
+    dispatch(removeCommentAC({ id: commentId }));
   };
   return isPopupVisible ? (
     <PopupWindow isVisible={isPopupVisible}>
@@ -144,9 +168,14 @@ const CardDetailsPopup = ({
                 name="comment"
                 placeholder="Write a comment"
                 onFocus={() => setIsAddingComment(true)}
-                onBlur={() => setIsAddingComment(false)}
+                onBlur={() => {
+                  if (!keyValueMap.get('comment')) {
+                    setIsAddingComment(false);
+                  }
+                }}
                 onChange={handleChange}
                 data-isEditing={isAddingComment}
+                required={true}
                 ref={commentInput}
               />
               <div className="add_buttons-wrapper">
@@ -166,8 +195,51 @@ const CardDetailsPopup = ({
                       {comment.author}
                     </span>
                   </header>
-                  <div className="card-details__comment-content">
-                    {comment.content}
+                  {editingComments.includes(comment.id) ? (
+                    <form
+                      onSubmit={(e) =>
+                        handleCommentEditFormSubmit(e, comment.id)
+                      }
+                    >
+                      <textarea
+                        className="card-details__comment-content add__textarea"
+                        name="newComment"
+                        onChange={handleChange}
+                      >
+                        {comment.content}
+                      </textarea>
+                      <div className="add_buttons-wrapper">
+                        <button
+                          type="submit"
+                          className="card-details__submit-btn add__submit-btn"
+                        >
+                          Save
+                        </button>
+                      </div>
+                    </form>
+                  ) : (
+                    <div className="card-details__comment-content add__textarea">
+                      {comment.content}
+                    </div>
+                  )}
+                  <div className="card-details__comment-actions">
+                    <button
+                      className="card-details__edit-comment"
+                      onClick={() => {
+                        setEditingComments((comments) => [
+                          ...comments,
+                          comment.id,
+                        ]);
+                      }}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="card-details__delete-comment"
+                      onClick={() => deleteComment(comment.id)}
+                    >
+                      Delete
+                    </button>
                   </div>
                 </li>
               ))}
