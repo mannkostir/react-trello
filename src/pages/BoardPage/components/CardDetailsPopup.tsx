@@ -5,7 +5,7 @@ import {
   removeCardAC,
   removeCommentAC,
 } from 'context/board/boardActions';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PopupWindow from 'shared/components/PopupWindow/PopupWindow';
 import { useForm } from 'shared/hooks/useForm';
 import { useInput } from 'shared/hooks/useInput';
@@ -39,6 +39,18 @@ const CardDetailsPopup = ({
   const { triggerTextAreaChangeEvent } = useInput();
 
   const commentInput = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    const ifEscPressedAction = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onPopupClose();
+      }
+    };
+
+    window.addEventListener('keydown', ifEscPressedAction);
+
+    return () => window.removeEventListener('keydown', ifEscPressedAction);
+  }, []);
 
   const handleDescriptionFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
