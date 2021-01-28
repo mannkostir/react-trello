@@ -11,7 +11,5 @@ export const updateState = <S, U extends Partial<S>>(
     localStorage.setItem(localStorageKey, JSON.stringify(updatedState));
   }
 
-  console.log(updatedState);
-
   return updatedState;
 };
