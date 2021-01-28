@@ -3,43 +3,11 @@ import './BoardPage.css';
 import BoardPageLists from './components/BoardPageLists';
 import { useSelector } from 'context/useSelector';
 import { useDispatch } from 'context/useDispatch';
-import { addCardAC, addListAC } from 'context/board/boardActions';
-import { card, user } from 'types/BoardPage.types';
+import { user } from 'types/BoardPage.types';
 import PopupWindow from 'shared/components/PopupWindow/PopupWindow';
 import { useForm } from 'shared/hooks/useForm';
 import { signInAC } from 'context/auth/authActions';
-import { addUserAC } from 'context/users/usersActions';
-
-const createUUID = () => {
-  return window.crypto.getRandomValues(new Uint32Array(1))[0].toString(16);
-};
-
-// Context wannabe
-// const state: State = {
-//   lists: [
-//     { id: 'a', title: 'To Do' },
-//     { id: 'b', title: 'In Progress' },
-//     { id: 'c', title: 'Testing' },
-//     { id: 'd', title: 'Done' },
-//   ],
-//   cards: [
-//     { id: 'a', listId: 'a', title: 'Smth' },
-//     {
-//       id: 'a',
-//       title: 'Whatever',
-//       description: 'What is love',
-//       listId: 'b',
-//     },
-//     {
-//       id: 'a',
-//       title: 'Whatever',
-//       description: 'What is love',
-//       listId: 'b',
-//     },
-//   ],
-//   comments: [],
-//   archive: [],
-// };
+import { createUUID } from 'shared/utils/createUUID';
 
 const BoardPageContainer = () => {
   const state = useSelector((state) => state);

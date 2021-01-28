@@ -1,4 +1,3 @@
-import { Action } from './actions.types';
 import { list, card, comment, user } from './BoardPage.types';
 
 export interface IBoardState {

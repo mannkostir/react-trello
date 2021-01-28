@@ -1,13 +1,7 @@
-import { defaultState } from 'context/store';
-import { card } from 'types/BoardPage.types';
-import { Reducer } from 'types/reducers.types';
-import { IBoardState, State } from 'types/store.types';
+import { IBoardState } from 'types/store.types';
 import { BoardAction, BoardActionTypes } from './boardActions';
 import { updateState } from 'shared/utils/updateState';
-
-const createUUID = () => {
-  return window.crypto.getRandomValues(new Uint32Array(1))[0].toString(16);
-};
+import { createUUID } from 'shared/utils/createUUID';
 
 export const boardReducer = (
   state: IBoardState,

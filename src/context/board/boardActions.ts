@@ -1,4 +1,4 @@
-import { Action, ActionWithPayload } from 'types/actions.types';
+import { createAction } from 'types/actions.types';
 import { list, card, comment } from 'types/BoardPage.types';
 
 export enum BoardActionTypes {
@@ -11,18 +11,6 @@ export enum BoardActionTypes {
   ADD_COMMENT = 'ADD_COMMENT',
   REMOVE_COMMENT = 'REMOVE_COMMENT',
   EDIT_COMMENT = 'EDIT_COMMENT',
-}
-
-function createAction<T extends string>(type: T): Action<T>;
-function createAction<T extends string, P extends object>(
-  type: T,
-  payload: P
-): ActionWithPayload<T, P>;
-function createAction<T extends string, P extends object>(
-  type: T,
-  payload?: P
-) {
-  return { type, ...(payload ? { payload } : {}) };
 }
 
 // List Actions

@@ -1,10 +1,6 @@
 import { updateState } from 'shared/utils/updateState';
-import { IUsersState, State } from 'types/store.types';
+import { IUsersState } from 'types/store.types';
 import { UsersAction, UsersActions } from './usersActions';
-
-const createUUID = () => {
-  return window.crypto.getRandomValues(new Uint32Array(1))[0].toString(16);
-};
 
 export const usersReducer = (
   state: IUsersState,

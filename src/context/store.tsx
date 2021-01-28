@@ -1,14 +1,9 @@
-import React, { createContext, Reducer, useEffect, useReducer } from 'react';
-import type { ReducerWithoutAction } from 'react';
+import React, { createContext, Reducer, useReducer } from 'react';
 import { IAuthState, IBoardState, IUsersState, State } from 'types/store.types';
 import { Action, AnyAction } from 'types/actions.types';
 import { boardReducer } from './board/boardReducer';
-import { signInAC } from './auth/authActions';
 import { usersReducer } from './users/usersReducer';
 import { authReducer } from './auth/authReducer';
-import { card, comment, list, user } from 'types/BoardPage.types';
-
-type ParsedJSONState<S> = S extends string ? S : null;
 
 const defaultBoard: IBoardState | null = localStorage.getItem('boardState')
   ? JSON.parse(localStorage.getItem('boardState') || '')
@@ -89,8 +84,7 @@ const combineReducers = (reducers: ReducersMapObject) => {
     }
     hasChanged =
       hasChanged || finalReducerKeys.length !== Object.keys(state).length;
-    // !!!
-    // Just a temporary
+
     return hasChanged ? (nextState as State) : (state as State);
   };
 };

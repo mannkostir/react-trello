@@ -2,10 +2,7 @@ import { IAuthState } from 'types/store.types';
 import { AuthAction, AuthActionTypes } from './authActions';
 import { defaultState } from '../store';
 import { updateState } from 'shared/utils/updateState';
-
-const createUUID = () => {
-  return window.crypto.getRandomValues(new Uint32Array(1))[0].toString(16);
-};
+import { createUUID } from 'shared/utils/createUUID';
 
 export const authReducer = (
   state: IAuthState,
