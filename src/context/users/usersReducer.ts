@@ -1,3 +1,4 @@
+import { updateState } from 'shared/utils/updateState';
 import { IUsersState, State } from 'types/store.types';
 import { UsersAction, UsersActions } from './usersActions';
 
@@ -16,7 +17,7 @@ export const usersReducer = (
         { id: action.payload.id, username: action.payload.username },
       ];
 
-      return { ...state, users: newUsers };
+      return updateState(state, { users: newUsers }, 'usersState');
     }
     default:
       return state;

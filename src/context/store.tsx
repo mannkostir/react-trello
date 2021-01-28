@@ -1,6 +1,6 @@
 import React, { createContext, Reducer, useEffect, useReducer } from 'react';
 import type { ReducerWithoutAction } from 'react';
-import { State } from 'types/store.types';
+import { IAuthState, IBoardState, IUsersState, State } from 'types/store.types';
 import { Action, AnyAction } from 'types/actions.types';
 import { boardReducer } from './board/boardReducer';
 import { signInAC } from './auth/authActions';
@@ -8,16 +8,30 @@ import { usersReducer } from './users/usersReducer';
 import { authReducer } from './auth/authReducer';
 import { card, comment, list, user } from 'types/BoardPage.types';
 
+type ParsedJSONState<S> = S extends string ? S : null;
+
+const defaultBoard: IBoardState | null = localStorage.getItem('boardState')
+  ? JSON.parse(localStorage.getItem('boardState') || '')
+  : null;
+
+const defaultUsers: IUsersState | null = localStorage.getItem('boardState')
+  ? JSON.parse(localStorage.getItem('usersState') || '')
+  : null;
+
+const defaultAuth: IAuthState | null = localStorage.getItem('authState')
+  ? JSON.parse(localStorage.getItem('authState') || '')
+  : null;
+
 export let defaultState: State = {
-  board: {
+  board: defaultBoard || {
     lists: [],
     cards: [],
     comments: [],
   },
-  users: {
+  users: defaultUsers || {
     users: [],
   },
-  auth: {
+  auth: defaultAuth || {
     currentUser: null,
   },
 };
