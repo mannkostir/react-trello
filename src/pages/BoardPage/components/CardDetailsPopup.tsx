@@ -174,7 +174,7 @@ const CardDetailsPopup = ({
                   }
                 }}
                 onChange={handleChange}
-                data-isEditing={isAddingComment}
+                data-isediting={isAddingComment}
                 required={true}
                 ref={commentInput}
               />
@@ -205,9 +205,8 @@ const CardDetailsPopup = ({
                         className="card-details__comment-content add__textarea"
                         name="newComment"
                         onChange={handleChange}
-                      >
-                        {comment.content}
-                      </textarea>
+                        defaultValue={comment.content}
+                      />
                       <div className="add_buttons-wrapper">
                         <button
                           type="submit"
