@@ -71,6 +71,9 @@
 .card:hover {
   background: #f4f5f7;
 }
+.card__title {
+  font-weight: 700;
+}
 .card__info {
   display: flex;
   flex-flow: row wrap;
