@@ -26,7 +26,7 @@ export const boardReducer = (
         return list;
       });
 
-      return { ...state, lists: newLists };
+      return updateState(state, { lists: newLists }, 'boardState');
     }
     case BoardActionTypes.ADD_CARD: {
       let uuid: string = createUUID();
