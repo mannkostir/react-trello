@@ -5,11 +5,13 @@ import { boardReducer } from './board/boardReducer';
 import { usersReducer } from './users/usersReducer';
 import { authReducer } from './auth/authReducer';
 
+console.log();
+
 const defaultBoard: IBoardState | null = localStorage.getItem('boardState')
   ? JSON.parse(localStorage.getItem('boardState') || '')
   : null;
 
-const defaultUsers: IUsersState | null = localStorage.getItem('boardState')
+const defaultUsers: IUsersState | null = localStorage.getItem('usersState')
   ? JSON.parse(localStorage.getItem('usersState') || '')
   : null;
 
@@ -84,7 +86,6 @@ const combineReducers = (reducers: ReducersMapObject) => {
     }
     hasChanged =
       hasChanged || finalReducerKeys.length !== Object.keys(state).length;
-
     return hasChanged ? (nextState as State) : (state as State);
   };
 };
