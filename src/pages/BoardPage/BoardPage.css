@@ -55,7 +55,9 @@
 .list__cards {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+}
+.list__cards > * {
+  margin-bottom: 10px;
 }
 
 .card {
@@ -72,5 +74,11 @@
 .card__info {
   display: flex;
   flex-flow: row wrap;
-  gap: 15px;
+}
+.card__info > *::after {
+  content: '|';
+  margin: 0 5px;
+}
+.card__info > *:last-child::after {
+  display: none;
 }

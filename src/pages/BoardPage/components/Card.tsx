@@ -35,9 +35,9 @@ const Card = ({
       <div className="card" onClick={togglePopup}>
         <span className="card__title">{card.title}</span>
         <div className="card__info">
-          <span>{card.description ? 'description' : null}</span>
+          {card.description ? <span>has description</span> : null}
           <span>
-            {comments?.length ? `comments[${comments.length}]` : null}
+            {comments?.length ? <span>comments[{comments.length}]</span> : null}
           </span>
         </div>
       </div>

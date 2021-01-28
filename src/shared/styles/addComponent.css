@@ -16,6 +16,9 @@
   height: auto;
   gap: 8px;
 }
+.add__buttons-wrapper {
+  margin-top: 7px;
+}
 .add__submit-btn {
   border: none;
   outline: none;
