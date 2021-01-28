@@ -15,11 +15,7 @@ export const boardReducer = (
 ): IBoardState => {
   switch (action.type) {
     case BoardActionTypes.ADD_LIST: {
-      let uuid: string;
-
-      do {
-        uuid = createUUID();
-      } while (state.lists.some((list) => list.id === uuid));
+      let uuid: string = createUUID();
 
       const newLists: typeof state.lists = [
         ...state.lists,
@@ -39,11 +35,7 @@ export const boardReducer = (
       return { ...state, lists: newLists };
     }
     case BoardActionTypes.ADD_CARD: {
-      let uuid: string;
-
-      do {
-        uuid = createUUID();
-      } while (state.cards.some((card) => card.id === uuid));
+      let uuid: string = createUUID();
 
       const newCards: typeof state.cards = [
         ...state.cards,
@@ -70,11 +62,7 @@ export const boardReducer = (
       return updateState(state, { cards: newCards }, 'boardState');
     }
     case BoardActionTypes.ADD_COMMENT: {
-      let uuid: string;
-
-      do {
-        uuid = createUUID();
-      } while (state.comments.some((comment) => comment.id === uuid));
+      let uuid: string = createUUID();
 
       return updateState(
         state,
