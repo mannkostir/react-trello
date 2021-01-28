@@ -89,6 +89,14 @@ const CardDetailsPopup = ({
     );
   };
 
+  const changeCardTitle = () => {
+    const newCardTitle = keyValueMap.get('cardTitle');
+
+    if (newCardTitle) {
+      dispatch(editCardAC({ id: card.id, title: newCardTitle }));
+    }
+  };
+
   const removeCard = () => {
     dispatch(removeCardAC({ id: card.id }));
     onPopupClose();
@@ -104,6 +112,9 @@ const CardDetailsPopup = ({
           <div className="card-details__header-content">
             <textarea
               className="card-details__card-title"
+              name="cardTitle"
+              onChange={handleChange}
+              onBlur={changeCardTitle}
               defaultValue={card.title}
             />
             <div className="card-details__list-data">

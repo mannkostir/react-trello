@@ -32,7 +32,7 @@ export const addCardAC = (cardData: Pick<card, 'title' | 'listId'>) =>
 export const removeCardAC = (cardData: Pick<card, 'id'>) =>
   createAction(BoardActionTypes.REMOVE_CARD, cardData);
 
-export const editCardAC = (cardData: card) =>
+export const editCardAC = (cardData: Partial<card>) =>
   createAction(BoardActionTypes.EDIT_CARD, cardData);
 
 // Comment Actions
