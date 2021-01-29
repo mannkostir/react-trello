@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { card, comment, user } from 'types/BoardPage.types';
+import * as types from 'types/BoardPage.types';
 import CardDetailsPopup from '../CardDetailsPopup';
 import styles from './Card.module.css';
 
 interface ICardData {
-  card: card;
-  comments: comment[];
+  card: types.Card;
+  comments: types.Comment[];
   listTitle: string;
-  currentUser: user | null;
+  currentUser: types.User | null;
   dispatch: React.Dispatch<any>;
 }
 

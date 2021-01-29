@@ -1,17 +1,17 @@
-import { list, card, comment, user } from './BoardPage.types';
+import { List, Card, Comment, User } from './BoardPage.types';
 
 export interface IBoardState {
-  lists: list[];
-  cards: card[];
-  comments: comment[];
+  lists: List[];
+  cards: Card[];
+  comments: Comment[];
 }
 
 export interface IUsersState {
-  users: user[];
+  users: User[];
 }
 
 export interface IAuthState {
-  currentUser: user | null;
+  currentUser: User | null;
 }
 
 export type State = {

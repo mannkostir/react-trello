@@ -29,7 +29,7 @@ const BoardPageLists = ({ state, dispatch }: IListsData) => {
   };
 
   return (
-    <div style={styles} className={`${styles.lists} row`}>
+    <div className={`${styles.lists} row`}>
       {state.board.lists.map((list) => (
         <div className={`${styles.list} col`} key={list.id}>
           <CardsList

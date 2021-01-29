@@ -1,18 +1,18 @@
 import { addCardAC, changeListTitleAC } from 'context/board/boardActions';
 import React, { FormEvent, useState } from 'react';
 import { useForm } from 'shared/hooks/useForm';
-import type { card, comment, user } from 'types/BoardPage.types';
+import * as types from 'types/BoardPage.types';
 import Card from '../Card';
 import styles from './CardsList.module.css';
 import addComponentStyles from 'shared/styles/AddComponent.module.css';
 
 interface IListData {
   listTitle: string;
-  cards: card[];
-  comments: comment[];
+  cards: types.Card[];
+  comments: types.Comment[];
   currentListId: string;
   dispatch: React.Dispatch<any>;
-  currentUser: user | null;
+  currentUser: types.User | null;
 }
 
 const CardsList = ({

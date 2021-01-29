@@ -9,16 +9,16 @@ import React, { useEffect, useRef, useState } from 'react';
 import PopupWindow from 'shared/components/PopupWindow/PopupWindow';
 import { useForm } from 'shared/hooks/useForm/useForm';
 import { useInput } from 'shared/hooks/useInput';
-import { card, comment, user } from 'types/BoardPage.types';
+import { Card, Comment, User } from 'types/BoardPage.types';
 import styles from './CardDetailsPopup.module.css';
 import addComponentStyles from 'shared/styles/AddComponent.module.css';
 
 interface ICardDetailsData {
-  card: card;
+  card: Card;
   listTitle: string;
-  comments: comment[];
+  comments: Comment[];
   isPopupVisible: boolean;
-  currentUser: user | null;
+  currentUser: User | null;
   onPopupClose: () => void;
   dispatch: React.Dispatch<any>;
 }

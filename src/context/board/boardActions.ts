@@ -1,5 +1,5 @@
 import { createAction } from 'types/actions.types';
-import { list, card, comment } from 'types/BoardPage.types';
+import { List, Card, Comment } from 'types/BoardPage.types';
 
 export enum BoardActionTypes {
   ADD_LIST = 'ADD_LIST',
@@ -15,35 +15,35 @@ export enum BoardActionTypes {
 
 // List Actions
 
-export const addListAC = (listData: Pick<list, 'title'>) =>
+export const addListAC = (listData: Pick<List, 'title'>) =>
   createAction(BoardActionTypes.ADD_LIST, listData);
 
-export const changeListTitleAC = (listData: Pick<list, 'id' | 'title'>) =>
+export const changeListTitleAC = (listData: Pick<List, 'id' | 'title'>) =>
   createAction(BoardActionTypes.CHANGE_LIST_TITLE, listData);
 
-export const removeListAC = (listData: Pick<list, 'id'>) =>
+export const removeListAC = (listData: Pick<List, 'id'>) =>
   createAction(BoardActionTypes.REMOVE_LIST, listData);
 
-// Card Actions
+// Card ActionsCard
 
-export const addCardAC = (cardData: Pick<card, 'title' | 'listId'>) =>
+export const addCardAC = (cardData: Pick<Card, 'title' | 'listId'>) =>
   createAction(BoardActionTypes.ADD_CARD, cardData);
 
-export const removeCardAC = (cardData: Pick<card, 'id'>) =>
+export const removeCardAC = (cardData: Pick<Card, 'id'>) =>
   createAction(BoardActionTypes.REMOVE_CARD, cardData);
 
-export const editCardAC = (cardData: Partial<card>) =>
+export const editCardAC = (cardData: Partial<Card>) =>
   createAction(BoardActionTypes.EDIT_CARD, cardData);
 
 // Comment Actions
 
-export const addCommentAC = (commentData: Omit<comment, 'id' | 'date'>) =>
+export const addCommentAC = (commentData: Omit<Comment, 'id' | 'date'>) =>
   createAction(BoardActionTypes.ADD_COMMENT, commentData);
 
-export const removeCommentAC = (commentData: Pick<comment, 'id'>) =>
+export const removeCommentAC = (commentData: Pick<Comment, 'id'>) =>
   createAction(BoardActionTypes.REMOVE_COMMENT, commentData);
 
-export const editCommentAC = (commentData: Pick<comment, 'id' | 'content'>) =>
+export const editCommentAC = (commentData: Pick<Comment, 'id' | 'content'>) =>
   createAction(BoardActionTypes.EDIT_COMMENT, commentData);
 
 export type BoardAction =

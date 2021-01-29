@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import BoardPageLists from './components/BoardPageLists';
 import { useSelector } from 'context/useSelector';
 import { useDispatch } from 'context/useDispatch';
-import { user } from 'types/BoardPage.types';
+import { User } from 'types/BoardPage.types';
 import { useForm } from 'shared/hooks/useForm/useForm';
 import { signInAC } from 'context/auth/authActions';
 import { createUUID } from 'shared/utils/createUUID';
@@ -14,7 +14,7 @@ const BoardPageContainer = () => {
   const dispatch = useDispatch();
 
   const [cachedUser, setCachedUser] = useState<Pick<
-    user,
+    User,
     'id' | 'username'
   > | null>(null);
 
@@ -30,7 +30,7 @@ const BoardPageContainer = () => {
     const username = keyValueMap.get('username');
 
     if (username) {
-      const user: user = { id: uuid, username };
+      const user: User = { id: uuid, username };
       dispatch(signInAC({ username, id: uuid }));
       localStorage.setItem('cachedUser', JSON.stringify(user));
       setCachedUser(user);
