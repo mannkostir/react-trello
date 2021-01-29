@@ -1,5 +1,5 @@
 import React from 'react';
-import './PopupWindow.css';
+import styles from './PopupWindow.module.css';
 
 const PopupWindow = ({
   children,
@@ -9,8 +9,8 @@ const PopupWindow = ({
   isVisible: boolean;
 }) => {
   return isVisible ? (
-    <div className="overlay">
-      <div className="popup">{children}</div>
+    <div className={styles.overlay}>
+      <div className={styles.popup}>{children}</div>
     </div>
   ) : null;
 };

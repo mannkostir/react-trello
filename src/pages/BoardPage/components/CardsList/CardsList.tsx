@@ -2,8 +2,9 @@ import { addCardAC, changeListTitleAC } from 'context/board/boardActions';
 import React, { FormEvent, useState } from 'react';
 import { useForm } from 'shared/hooks/useForm';
 import type { card, comment, user } from 'types/BoardPage.types';
-import Card from './Card';
-import 'shared/styles/addComponent.css';
+import Card from '../Card';
+import styles from './CardsList.module.css';
+import addComponentStyles from 'shared/styles/AddComponent.module.css';
 
 interface IListData {
   listTitle: string;
@@ -61,10 +62,10 @@ const CardsList = ({
   };
 
   return (
-    <div className="list__content container-fluid">
-      <header className="list__header">
+    <div className={`${styles.content} container-fluid`}>
+      <header className={styles.header}>
         <div
-          className="list__heading editable-heading"
+          className={styles.editableHeading}
           contentEditable={true}
           suppressContentEditableWarning={true}
           onBlur={handleTitleEdit}
@@ -73,7 +74,7 @@ const CardsList = ({
           <h6>{listTitle}</h6>
         </div>
       </header>
-      <div className="list__cards">
+      <div className={styles.cards}>
         {cards.map((card, index) => (
           <Card
             listTitle={listTitle}
@@ -85,30 +86,36 @@ const CardsList = ({
           />
         ))}
       </div>
-      <div className="list__add-component">
+      <div>
         {isAddingCard ? (
-          <form className="add__form" onSubmit={handleCardFormSubmit}>
+          <form
+            className={addComponentStyles.form}
+            onSubmit={handleCardFormSubmit}
+          >
             <textarea
-              className="add__textarea card"
+              className={`${addComponentStyles.textarea} card`}
               name="cardTitle"
               placeholder="Enter a title for this card..."
               onChange={handleChange}
               required={true}
             />
-            <div className="add__buttons-wrapper">
-              <button type="submit" className="add__submit-btn">
+            <div className={addComponentStyles.buttonsWrapper}>
+              <button type="submit" className={addComponentStyles.submitBtn}>
                 Add Card
               </button>
               <button
                 onClick={(e) => setIsAddingCard(false)}
-                className="add__discard-btn"
+                className={addComponentStyles.discardBtn}
               >
                 X
               </button>
             </div>
           </form>
         ) : (
-          <span className="add__toggle" onClick={(e) => setIsAddingCard(true)}>
+          <span
+            className={addComponentStyles.toggle}
+            onClick={(e) => setIsAddingCard(true)}
+          >
             + {cards.length ? 'Add another card' : 'Add a card'}
           </span>
         )}

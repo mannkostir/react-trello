@@ -1,4 +1,4 @@
-.add__toggle {
+.toggle {
   display: block;
   text-decoration: none;
   color: inherit;
@@ -6,20 +6,20 @@
   padding: 0.5em 1em;
   font-size: 14px;
 }
-.add__toggle:hover {
+.toggle:hover {
   color: inherit;
   background: rgba(9, 30, 66, 0.08);
 }
-.add__form {
+.form {
   display: flex;
   flex-direction: column;
   height: auto;
   gap: 8px;
 }
-.add__buttons-wrapper {
+.buttonsWrapper {
   margin-top: 7px;
 }
-.add__submit-btn {
+.submitBtn {
   border: none;
   outline: none;
   margin: 0;
@@ -29,15 +29,15 @@
   color: #fff;
   background: #5aac44;
 }
-.add__submit-btn:active {
+.submitBtn:active {
   outline: none;
   border: none;
   background: #49852e;
 }
-.add__submit-btn:hover {
+.submitBtn:hover {
   background: #61bd4f;
 }
-.add__discard-btn {
+.discardBtn {
   border: none;
   outline: none;
   margin: 0;
@@ -46,10 +46,10 @@
   background: transparent;
   color: #6b778c;
 }
-.add__discard-btn:hover {
+.discardBtn:hover {
   color: #172b4d;
 }
-.add__textarea {
+.textarea {
   resize: none;
   border: none;
   border-radius: 5px;
@@ -59,11 +59,11 @@
   background: #fff;
   overflow: hidden;
 }
-.add__textarea:hover {
+.textarea:hover {
   background: #fff;
 }
-.add__submit-btn:focus,
-.add__discard-btn:focus,
-.add__textarea:focus {
+.submitBtn:focus,
+.discardBtn:focus,
+.textarea:focus {
   outline: none;
 }

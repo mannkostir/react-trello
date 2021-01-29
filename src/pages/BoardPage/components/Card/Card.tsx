@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { card, comment, user } from 'types/BoardPage.types';
-import CardDetailsPopup from './CardDetailsPopup';
+import CardDetailsPopup from '../CardDetailsPopup';
+import styles from './Card.module.css';
 
 interface ICardData {
   card: card;
@@ -32,9 +33,9 @@ const Card = ({
         currentUser={currentUser}
         dispatch={dispatch}
       />
-      <div className="card" onClick={togglePopup}>
-        <span className="card__title">{card.title}</span>
-        <div className="card__info">
+      <div className={`${styles.card} card`} onClick={togglePopup}>
+        <span className={styles.title}>{card.title}</span>
+        <div className={styles.info}>
           {card.description ? <span>has description</span> : null}
           <span>
             {comments?.length ? <span>comments[{comments.length}]</span> : null}

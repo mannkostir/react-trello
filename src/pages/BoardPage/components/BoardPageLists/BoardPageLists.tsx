@@ -1,6 +1,7 @@
 import React, { FormEvent, useState } from 'react';
-import CardsList from './CardsList';
-import 'shared/styles/addComponent.css';
+import CardsList from '../CardsList';
+import styles from './BoardPageLists.module.css';
+import addComponentStyles from 'shared/styles/AddComponent.module.css';
 import { useForm } from 'shared/hooks/useForm';
 import { addListAC } from 'context/board/boardActions';
 import { State } from 'types/store.types';
@@ -28,9 +29,9 @@ const BoardPageLists = ({ state, dispatch }: IListsData) => {
   };
 
   return (
-    <div className="board__lists row">
+    <div style={styles} className={`${styles.lists} row`}>
       {state.board.lists.map((list) => (
-        <div className="board__list column col" key={list.id}>
+        <div className={`${styles.list} col`} key={list.id}>
           <CardsList
             listTitle={list.title}
             currentListId={list.id}
@@ -41,31 +42,37 @@ const BoardPageLists = ({ state, dispatch }: IListsData) => {
           />
         </div>
       ))}
-      <div className="board__list column col">
+      <div className={`${styles.list} col`}>
         <div>
           {isAddingList ? (
-            <form className="add__form" onSubmit={handleListFormSubmit}>
+            <form
+              className={addComponentStyles.form}
+              onSubmit={handleListFormSubmit}
+            >
               <textarea
-                className="add__textarea card"
+                className={`${addComponentStyles.textarea} card`}
                 name="listTitle"
                 placeholder="Enter a title for this column..."
                 onChange={handleChange}
                 required={true}
               />
-              <div className="add__buttons-wrapper">
-                <button type="submit" className="add__submit-btn">
+              <div className={addComponentStyles.buttonsWrapper}>
+                <button type="submit" className={addComponentStyles.submitBtn}>
                   Add Card
                 </button>
                 <button
                   onClick={(e) => setIsAddingList(false)}
-                  className="add__discard-btn"
+                  className={addComponentStyles.discardBtn}
                 >
                   X
                 </button>
               </div>
             </form>
           ) : (
-            <span className="add__toggle" onClick={() => setIsAddingList(true)}>
+            <span
+              className={addComponentStyles.toggle}
+              onClick={() => setIsAddingList(true)}
+            >
               +{' '}
               {state.board.lists.length ? 'Add another column' : 'Add a column'}
             </span>

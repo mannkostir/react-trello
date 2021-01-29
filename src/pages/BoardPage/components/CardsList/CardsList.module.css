@@ -1,0 +1,33 @@
+.content {
+  align-items: center;
+  max-height: 100%;
+  background: #ebecf0;
+  padding: 10px;
+}
+.header {
+  padding: 10px;
+  justify-content: start;
+  cursor: pointer;
+}
+.editableHeading {
+  padding: 5px;
+}
+.editableHeading:focus {
+  outline: none;
+  box-shadow: inset 0 0 0 2px #0079bf;
+  border-radius: 5px;
+  cursor: text;
+}
+.editableHeading > * {
+  margin: 0;
+}
+.addCard {
+  margin-top: 10px;
+}
+.cards {
+  display: flex;
+  flex-direction: column;
+}
+.cards > * {
+  margin-bottom: 10px;
+}

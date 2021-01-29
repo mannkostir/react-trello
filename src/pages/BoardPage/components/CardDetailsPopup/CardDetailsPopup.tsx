@@ -7,10 +7,11 @@ import {
 } from 'context/board/boardActions';
 import React, { useEffect, useRef, useState } from 'react';
 import PopupWindow from 'shared/components/PopupWindow/PopupWindow';
-import { useForm } from 'shared/hooks/useForm';
+import { useForm } from 'shared/hooks/useForm/useForm';
 import { useInput } from 'shared/hooks/useInput';
 import { card, comment, user } from 'types/BoardPage.types';
-import '../cardDetailsPopup.css';
+import styles from './CardDetailsPopup.module.css';
+import addComponentStyles from 'shared/styles/AddComponent.module.css';
 
 interface ICardDetailsData {
   card: card;
@@ -126,51 +127,50 @@ const CardDetailsPopup = ({
   };
   return isPopupVisible ? (
     <PopupWindow isVisible={isPopupVisible}>
-      <div className="card-details">
-        <header className="card-details__header">
-          <div className="card-details__header-content">
+      <div className={styles.container}>
+        <header className={styles.header}>
+          <div>
             <textarea
-              className="card-details__card-title"
+              className={styles.cardTitle}
               name="cardTitle"
               onChange={handleChange}
               onBlur={changeCardTitle}
               defaultValue={card.title}
               onClick={(e) => e.currentTarget.select()}
             />
-            <div className="card-details__list-data">
-              in list{' '}
-              <span className="card-details__list-title">{listTitle}</span>
+            <div>
+              in list <span className={styles.listTitle}>{listTitle}</span>
             </div>
           </div>
-          <span
-            className="card-details__popup-close-btn"
-            onClick={onPopupClose}
-          >
+          <span className={styles.popupCloseBtn} onClick={onPopupClose}>
             CLOSE
           </span>
         </header>
-        <section className="card-details__main">
-          <div className="card-details__description">
-            <span className="card-details__description-title">Description</span>
-            <div className="card-details__description-content">
+        <section className={styles.main}>
+          <div>
+            <span className={styles.descriptionTitle}>Description</span>
+            <div>
               {isAddingDescription ? (
                 <form
-                  className="add__form"
+                  className={addComponentStyles.form}
                   onSubmit={(e) => handleDescriptionFormSubmit(e)}
                 >
                   <textarea
-                    className="add__textarea"
+                    className={addComponentStyles.textarea}
                     name="cardDescription"
                     onChange={handleChange}
                     defaultValue={card.description}
                     ref={descriptionTextArea}
                   />
-                  <div className="add__buttons-wrapper">
-                    <button type="submit" className="add__submit-btn">
+                  <div className={addComponentStyles.buttonsWrapper}>
+                    <button
+                      type="submit"
+                      className={addComponentStyles.submitBtn}
+                    >
                       Save
                     </button>
                     <button
-                      className="add__discard-btn"
+                      className={addComponentStyles.discardBtn}
                       onClick={() => setIsAddingDescription(false)}
                     >
                       X
@@ -179,7 +179,7 @@ const CardDetailsPopup = ({
                 </form>
               ) : (
                 <div
-                  className="add__toggle"
+                  className={addComponentStyles.toggle}
                   onClick={() => setIsAddingDescription(true)}
                 >
                   {card.description
@@ -189,14 +189,11 @@ const CardDetailsPopup = ({
               )}
             </div>
           </div>
-          <div className="card-details__activity">
-            <div className="card-details__activity-title">Activity</div>
-            <form
-              className="card-details__comment"
-              onSubmit={handleCommentFormSubmit}
-            >
+          <div>
+            <div className={styles.activityTitle}>Activity</div>
+            <form className={styles.comment} onSubmit={handleCommentFormSubmit}>
               <textarea
-                className="card-details__comment-textarea add__textarea"
+                className={`${styles.commentTextarea} ${addComponentStyles.textarea}`}
                 name="comment"
                 placeholder="Write a comment"
                 onFocus={() => setIsAddingComment(true)}
@@ -210,20 +207,20 @@ const CardDetailsPopup = ({
                 required={true}
                 ref={commentInput}
               />
-              <div className="add_buttons-wrapper">
+              <div className={addComponentStyles.buttonsWrapper}>
                 <button
                   type="submit"
-                  className="card-details__submit-btn add__submit-btn"
+                  className={`${addComponentStyles.submitBtn}`}
                 >
                   Save
                 </button>
               </div>
             </form>
-            <ul className="card-details__activity-list">
+            <ul className={styles.activityList}>
               {comments.map((comment) => (
-                <li key={comment.id} className="card-details__comment">
-                  <header className="card-details__comment-header">
-                    <span className="card-details__comment-author">
+                <li key={comment.id} className={styles.comment}>
+                  <header>
+                    <span className={styles.commentAuthor}>
                       {comment.author}
                     </span>
                   </header>
@@ -234,28 +231,29 @@ const CardDetailsPopup = ({
                       }
                     >
                       <textarea
-                        className="card-details__comment-content add__textarea"
+                        className={`${styles.commentContent} ${addComponentStyles.textarea}`}
                         name="newComment"
                         onChange={handleChange}
                         defaultValue={comment.content}
                       />
-                      <div className="add_buttons-wrapper">
+                      <div className={addComponentStyles.buttonsWrapper}>
                         <button
                           type="submit"
-                          className="card-details__submit-btn add__submit-btn"
+                          className={addComponentStyles.submitBtn}
                         >
                           Save
                         </button>
                       </div>
                     </form>
                   ) : (
-                    <div className="card-details__comment-content add__textarea">
+                    <div
+                      className={`${styles.commentContent} ${addComponentStyles.textarea}`}
+                    >
                       {comment.content}
                     </div>
                   )}
-                  <div className="card-details__comment-actions">
+                  <div className={styles.commentActions}>
                     <button
-                      className="card-details__edit-comment"
                       onClick={() => {
                         setEditingComments((comments) => [
                           ...comments,
@@ -265,10 +263,7 @@ const CardDetailsPopup = ({
                     >
                       Edit
                     </button>
-                    <button
-                      className="card-details__delete-comment"
-                      onClick={() => deleteComment(comment.id)}
-                    >
+                    <button onClick={() => deleteComment(comment.id)}>
                       Delete
                     </button>
                   </div>
@@ -277,11 +272,11 @@ const CardDetailsPopup = ({
             </ul>
           </div>
         </section>
-        <aside className="card-details__sidebar">
+        <aside className={styles.sidebar}>
           Actions:
-          <ul className="card-details__card-actions">
+          <ul className={styles.cardActions}>
             <li
-              className="card-details__card-actions-item add__toggle"
+              className={`${styles.cardActionsItem} ${addComponentStyles.toggle}`}
               onClick={removeCard}
             >
               Delete Card
