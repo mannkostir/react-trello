@@ -22,6 +22,7 @@ const authSlice = createSlice({
       const user = {
         id: action.payload.id || uuid,
         username: action.payload.username,
+        password: action.payload.password,
       };
 
       state.currentUser = user;
@@ -31,7 +32,7 @@ const authSlice = createSlice({
     signOut(state, action: PayloadAction<Pick<User, 'id'>>) {
       state.currentUser = null;
 
-      localStorage.removeItem(RootStateKeys.AUTH_STATE);
+      localStorage.setItem(RootStateKeys.AUTH_STATE, JSON.stringify(state));
     },
   },
 });

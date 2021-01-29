@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { RootStateKeys } from 'constants/localStorageKeys';
 import { User } from 'types/BoardPage.types';
 import { IUsersState } from 'types/store.types';
 
@@ -14,13 +15,17 @@ const usersSlice = createSlice({
   reducers: {
     addUser(state, action: PayloadAction<User>) {
       state.users.push(action.payload);
+
+      localStorage.setItem(RootStateKeys.USERS_STATE, JSON.stringify(state));
     },
     removeUser(state, action: PayloadAction<User>) {
       const targetIndex = state.users.findIndex(
         (user) => user.id === action.payload.id
       );
 
-      delete state.users[targetIndex];
+      state.users.splice(targetIndex, 1);
+
+      localStorage.setItem(RootStateKeys.USERS_STATE, JSON.stringify(state));
     },
   },
 });

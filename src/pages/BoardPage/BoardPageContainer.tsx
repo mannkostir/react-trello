@@ -13,53 +13,49 @@ const BoardPageContainer = () => {
   const state = useSelector((state: RootState) => state);
   const dispatch = useDispatch();
 
-  const [cachedUser, setCachedUser] = useState<Pick<
-    User,
-    'id' | 'username'
-  > | null>(null);
+  // const [cachedUser, setCachedUser] = useState<Pick<
+  //   User,
+  //   'id' | 'username'
+  // > | null>(null);
 
-  const [isFirstVisit, setIsFirstVisit] = useState(false);
+  // const [isFirstVisit, setIsFirstVisit] = useState(false);
 
-  const { handleChange, keyValueMap } = useForm();
+  // const { handleChange, keyValueMap } = useForm();
 
-  const handleUserFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  // const handleUserFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
 
-    let uuid = createUUID();
+  //   let uuid = createUUID();
 
-    const username = keyValueMap.get('username');
+  //   const username = keyValueMap.get('username');
 
-    if (username) {
-      const user: User = { id: uuid, username };
-      dispatch(signIn({ username, id: uuid }));
-      localStorage.setItem('cachedUser', JSON.stringify(user));
-      setCachedUser(user);
-    }
-  };
+  //   if (username) {
+  //     const user: User = { id: uuid, username };
+  //     dispatch(signIn({ username, id: uuid }));
+  //     localStorage.setItem('cachedUser', JSON.stringify(user));
+  //     setCachedUser(user);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   setIsFirstVisit(!cachedUser);
+  // }, [cachedUser]);
 
   useEffect(() => {
-    setIsFirstVisit(!cachedUser);
-  }, [cachedUser]);
-
-  useEffect(() => {
-    const userStorageJSON = localStorage.getItem('cachedUser');
-
-    if (!userStorageJSON) return;
-
-    const user = JSON.parse(userStorageJSON);
-
-    dispatch(signIn(user));
-
-    setIsFirstVisit(false);
+    // const userStorageJSON = localStorage.getItem('cachedUser');
+    // if (!userStorageJSON) return;
+    // const user = JSON.parse(userStorageJSON);
+    // dispatch(signIn(user));
+    // setIsFirstVisit(false);
   }, []);
 
   return (
     <section className={`${styles.container} fluid-container`}>
-      <FirstVisitForm
+      {/* <FirstVisitForm
         isVisible={isFirstVisit}
         handleChange={handleChange}
         handleUserFormSubmit={handleUserFormSubmit}
-      />
+      /> */}
       <BoardPageLists state={state} dispatch={dispatch} />
     </section>
   );

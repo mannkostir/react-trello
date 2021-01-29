@@ -1,0 +1,18 @@
+.closeIcon {
+  position: absolute;
+  right: 20px;
+  top: 15px;
+  cursor: pointer;
+}
+.closeIcon:hover {
+  text-decoration: underline;
+}
+.authForm {
+  padding: 70px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.authForm > * {
+  margin-bottom: 15px;
+}

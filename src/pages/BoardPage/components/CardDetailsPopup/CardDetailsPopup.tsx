@@ -125,6 +125,14 @@ const CardDetailsPopup = ({
   const deleteComment = (commentId: string) => {
     dispatch(removeComment({ id: commentId }));
   };
+
+  const checkCommentAuth = (commentData: Pick<Comment, 'author' | 'id'>) => {
+    if (!currentUser) throw new Error('Status: 403');
+
+    if (currentUser.username !== commentData.author) {
+      throw new Error('Status: 403');
+    }
+  };
   return isPopupVisible ? (
     <PopupWindow isVisible={isPopupVisible}>
       <div className={styles.container}>
@@ -255,6 +263,10 @@ const CardDetailsPopup = ({
                   <div className={styles.commentActions}>
                     <button
                       onClick={() => {
+                        checkCommentAuth({
+                          author: comment.author,
+                          id: comment.id,
+                        });
                         setEditingComments((comments) => [
                           ...comments,
                           comment.id,
@@ -263,7 +275,15 @@ const CardDetailsPopup = ({
                     >
                       Edit
                     </button>
-                    <button onClick={() => deleteComment(comment.id)}>
+                    <button
+                      onClick={() => {
+                        checkCommentAuth({
+                          author: comment.author,
+                          id: comment.id,
+                        });
+                        deleteComment(comment.id);
+                      }}
+                    >
                       Delete
                     </button>
                   </div>
