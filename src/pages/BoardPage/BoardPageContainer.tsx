@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import BoardPageLists from './components/BoardPageLists';
-import { useSelector } from 'context/useSelector';
-import { useDispatch } from 'context/useDispatch';
 import { User } from 'types/BoardPage.types';
 import { useForm } from 'hooks/useForm/useForm';
-import { signInAC } from 'context/auth/authActions';
 import { createUUID } from 'utils/createUUID';
 import FirstVisitForm from './components/FirstVisitFormPopup';
 import styles from './BoardPageContainer.module.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { signIn } from 'store/auth/authSlice';
+import type { RootState } from 'store';
 
 const BoardPageContainer = () => {
-  const state = useSelector((state) => state);
+  const state = useSelector((state: RootState) => state);
   const dispatch = useDispatch();
 
   const [cachedUser, setCachedUser] = useState<Pick<
@@ -31,7 +31,7 @@ const BoardPageContainer = () => {
 
     if (username) {
       const user: User = { id: uuid, username };
-      dispatch(signInAC({ username, id: uuid }));
+      dispatch(signIn({ username, id: uuid }));
       localStorage.setItem('cachedUser', JSON.stringify(user));
       setCachedUser(user);
     }
@@ -48,7 +48,7 @@ const BoardPageContainer = () => {
 
     const user = JSON.parse(userStorageJSON);
 
-    dispatch(signInAC(user));
+    dispatch(signIn(user));
 
     setIsFirstVisit(false);
   }, []);

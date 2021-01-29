@@ -1,4 +1,4 @@
-import StoreProvider from 'context/store';
+import StoreProvider from 'store';
 import BoardPageContainer from 'pages/BoardPage/BoardPageContainer';
 import React from 'react';
 import './App.css';

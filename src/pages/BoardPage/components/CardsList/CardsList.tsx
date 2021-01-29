@@ -1,10 +1,10 @@
-import { addCardAC, changeListTitleAC } from 'context/board/boardActions';
 import React, { FormEvent, useState } from 'react';
 import { useForm } from 'hooks/useForm';
 import * as types from 'types/BoardPage.types';
 import Card from '../Card';
 import styles from './CardsList.module.css';
 import addComponentStyles from 'styles/AddComponent.module.css';
+import { addCard, changeListTitle } from 'store/board/boardSlice';
 
 interface IListData {
   listTitle: string;
@@ -27,17 +27,13 @@ const CardsList = ({
 
   const { keyValueMap, handleChange } = useForm();
 
-  const addCard = (cardTitle: string) => {
-    dispatch(addCardAC({ title: cardTitle, listId: currentListId }));
-  };
-
   const handleCardFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const cardTitle = keyValueMap.get('cardTitle');
 
     if (cardTitle) {
-      addCard(cardTitle);
+      dispatch(addCard({ listId: currentListId, title: cardTitle }));
     }
 
     setIsAddingCard(false);
@@ -46,7 +42,7 @@ const CardsList = ({
   const handleTitleEdit = (e: React.FocusEvent<HTMLDivElement>) => {
     const newTitle: string = e.target.innerText;
 
-    dispatch(changeListTitleAC({ title: newTitle, id: currentListId }));
+    dispatch(changeListTitle({ title: newTitle, id: currentListId }));
   };
 
   const selectAllText = (e: React.MouseEvent<HTMLDivElement>) => {

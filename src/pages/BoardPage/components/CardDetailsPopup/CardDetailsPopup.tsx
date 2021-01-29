@@ -1,10 +1,3 @@
-import {
-  addCommentAC,
-  editCardAC,
-  editCommentAC,
-  removeCardAC,
-  removeCommentAC,
-} from 'context/board/boardActions';
 import React, { useEffect, useRef, useState } from 'react';
 import PopupWindow from 'components/PopupWindow/PopupWindow';
 import { useForm } from 'hooks/useForm/useForm';
@@ -12,6 +5,13 @@ import { useInput } from 'hooks/useInput';
 import { Card, Comment, User } from 'types/BoardPage.types';
 import styles from './CardDetailsPopup.module.css';
 import addComponentStyles from 'styles/AddComponent.module.css';
+import {
+  addComment,
+  editCard,
+  editComment,
+  removeComment,
+  removeCard,
+} from 'store/board/boardSlice';
 
 interface ICardDetailsData {
   card: Card;
@@ -65,7 +65,7 @@ const CardDetailsPopup = ({
 
     const newDescription = keyValueMap.get('cardDescription');
 
-    dispatch(editCardAC({ ...card, description: newDescription }));
+    dispatch(editCard({ ...card, description: newDescription }));
 
     setIsAddingDescription(false);
   };
@@ -77,7 +77,7 @@ const CardDetailsPopup = ({
 
     if (currentUser?.username) {
       dispatch(
-        addCommentAC({
+        addComment({
           cardId: card.id,
           content: comment,
           author: currentUser.username,
@@ -101,7 +101,7 @@ const CardDetailsPopup = ({
     const newComment = keyValueMap.get('newComment') || '';
 
     if (newComment) {
-      dispatch(editCommentAC({ id: commentId, content: newComment }));
+      dispatch(editComment({ id: commentId, content: newComment }));
     }
 
     setEditingComments((comments) =>
@@ -113,17 +113,17 @@ const CardDetailsPopup = ({
     const newCardTitle = keyValueMap.get('cardTitle');
 
     if (newCardTitle) {
-      dispatch(editCardAC({ id: card.id, title: newCardTitle }));
+      dispatch(editCard({ id: card.id, title: newCardTitle }));
     }
   };
 
-  const removeCard = () => {
-    dispatch(removeCardAC({ id: card.id }));
+  const deleteCard = () => {
+    dispatch(removeCard({ id: card.id }));
     onPopupClose();
   };
 
   const deleteComment = (commentId: string) => {
-    dispatch(removeCommentAC({ id: commentId }));
+    dispatch(removeComment({ id: commentId }));
   };
   return isPopupVisible ? (
     <PopupWindow isVisible={isPopupVisible}>
@@ -277,7 +277,7 @@ const CardDetailsPopup = ({
           <ul className={styles.cardActions}>
             <li
               className={`${styles.cardActionsItem} ${addComponentStyles.toggle}`}
-              onClick={removeCard}
+              onClick={deleteCard}
             >
               Delete Card
             </li>

@@ -3,8 +3,8 @@ import CardsList from '../CardsList';
 import styles from './BoardPageLists.module.css';
 import addComponentStyles from 'styles/AddComponent.module.css';
 import { useForm } from 'hooks/useForm';
-import { addListAC } from 'context/board/boardActions';
 import { State } from 'types/store.types';
+import { addList } from 'store/board/boardSlice';
 
 interface IListsData {
   state: State;
@@ -22,7 +22,7 @@ const BoardPageLists = ({ state, dispatch }: IListsData) => {
     const listTitle = keyValueMap.get('listTitle');
 
     if (listTitle) {
-      dispatch(addListAC({ title: listTitle }));
+      dispatch(addList({ title: listTitle }));
     }
 
     setIsAddingList(false);

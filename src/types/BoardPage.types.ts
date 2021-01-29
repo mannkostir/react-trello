@@ -2,7 +2,7 @@ export type Comment = {
   readonly id: string;
   readonly author: string;
   content: string;
-  readonly date: Date;
+  readonly date: string;
   readonly cardId: string;
 };
 
@@ -16,7 +16,7 @@ export type Card = {
 export type Activity = {
   readonly id: string;
   readonly action: string;
-  readonly data: Date;
+  readonly data: string;
   readonly cardId: string;
 };
 
