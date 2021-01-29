@@ -3,9 +3,9 @@ import BoardPageLists from './components/BoardPageLists';
 import { useSelector } from 'context/useSelector';
 import { useDispatch } from 'context/useDispatch';
 import { User } from 'types/BoardPage.types';
-import { useForm } from 'shared/hooks/useForm/useForm';
+import { useForm } from 'hooks/useForm/useForm';
 import { signInAC } from 'context/auth/authActions';
-import { createUUID } from 'shared/utils/createUUID';
+import { createUUID } from 'utils/createUUID';
 import FirstVisitForm from './components/FirstVisitFormPopup';
 import styles from './BoardPageContainer.module.css';
 

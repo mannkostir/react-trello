@@ -1,10 +1,10 @@
 import { addCardAC, changeListTitleAC } from 'context/board/boardActions';
 import React, { FormEvent, useState } from 'react';
-import { useForm } from 'shared/hooks/useForm';
+import { useForm } from 'hooks/useForm';
 import * as types from 'types/BoardPage.types';
 import Card from '../Card';
 import styles from './CardsList.module.css';
-import addComponentStyles from 'shared/styles/AddComponent.module.css';
+import addComponentStyles from 'styles/AddComponent.module.css';
 
 interface IListData {
   listTitle: string;

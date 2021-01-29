@@ -1,4 +1,4 @@
-import { updateState } from 'shared/utils/updateState';
+import { updateState } from 'utils/updateState';
 import { IUsersState } from 'types/store.types';
 import { UsersAction, UsersActions } from './usersActions';
 

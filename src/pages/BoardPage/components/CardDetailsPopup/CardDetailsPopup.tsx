@@ -6,12 +6,12 @@ import {
   removeCommentAC,
 } from 'context/board/boardActions';
 import React, { useEffect, useRef, useState } from 'react';
-import PopupWindow from 'shared/components/PopupWindow/PopupWindow';
-import { useForm } from 'shared/hooks/useForm/useForm';
-import { useInput } from 'shared/hooks/useInput';
+import PopupWindow from 'components/PopupWindow/PopupWindow';
+import { useForm } from 'hooks/useForm/useForm';
+import { useInput } from 'hooks/useInput';
 import { Card, Comment, User } from 'types/BoardPage.types';
 import styles from './CardDetailsPopup.module.css';
-import addComponentStyles from 'shared/styles/AddComponent.module.css';
+import addComponentStyles from 'styles/AddComponent.module.css';
 
 interface ICardDetailsData {
   card: Card;

@@ -1,5 +1,5 @@
 import React from 'react';
-import PopupWindow from 'shared/components/PopupWindow/PopupWindow';
+import PopupWindow from 'components/PopupWindow/PopupWindow';
 import styles from './FirstVisitFormPopup.module.css';
 
 interface FirstVisitProps {

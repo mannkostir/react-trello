@@ -1,7 +1,7 @@
 import { IBoardState } from 'types/store.types';
 import { BoardAction, BoardActionTypes } from './boardActions';
-import { updateState } from 'shared/utils/updateState';
-import { createUUID } from 'shared/utils/createUUID';
+import { updateState } from 'utils/updateState';
+import { createUUID } from 'utils/createUUID';
 
 export const boardReducer = (
   state: IBoardState,

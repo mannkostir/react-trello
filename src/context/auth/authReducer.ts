@@ -1,8 +1,8 @@
 import { IAuthState } from 'types/store.types';
 import { AuthAction, AuthActionTypes } from './authActions';
 import { defaultState } from '../store';
-import { updateState } from 'shared/utils/updateState';
-import { createUUID } from 'shared/utils/createUUID';
+import { updateState } from 'utils/updateState';
+import { createUUID } from 'utils/createUUID';
 
 export const authReducer = (
   state: IAuthState,

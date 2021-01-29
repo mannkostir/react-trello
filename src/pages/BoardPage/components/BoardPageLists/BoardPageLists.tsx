@@ -1,8 +1,8 @@
 import React, { FormEvent, useState } from 'react';
 import CardsList from '../CardsList';
 import styles from './BoardPageLists.module.css';
-import addComponentStyles from 'shared/styles/AddComponent.module.css';
-import { useForm } from 'shared/hooks/useForm';
+import addComponentStyles from 'styles/AddComponent.module.css';
+import { useForm } from 'hooks/useForm';
 import { addListAC } from 'context/board/boardActions';
 import { State } from 'types/store.types';
 
