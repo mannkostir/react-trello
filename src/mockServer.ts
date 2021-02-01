@@ -2,10 +2,6 @@ import { createServer, Model, Registry, Response } from 'miragejs';
 import { ModelDefinition } from 'miragejs/-types';
 import Schema from 'miragejs/orm/schema';
 
-interface IList {
-  readonly id: string;
-  title: string;
-}
 interface ICard {
   readonly id: string;
   listId: string;
@@ -18,6 +14,13 @@ interface IComment {
   content: string;
   readonly date: string;
   readonly cardId: string;
+}
+interface IList {
+  readonly id: string;
+  readonly userId: string;
+  title: string;
+  cards: ICard[];
+  comments: IComment[];
 }
 
 const ListModel: ModelDefinition<IList> = Model.extend({});
@@ -42,46 +45,109 @@ export default function () {
       comment: Model,
     },
     routes() {
-      this.get('api/lists', (schema: AppSchema) => {
-        return schema.all('list');
-      });
-      this.get('api/cards', (schema: AppSchema) => {
-        return schema.all('card');
-      });
-      this.get('api/comments', (schema: AppSchema) => {
-        return schema.all('comment');
-      });
+      this.get('api/:userId/lists', (schema: AppSchema, req) => {
+        const lists = schema.findBy('list', { userId: req.params.userId });
 
-      this.post('api/lists', (schema: AppSchema, req) => {
-        return schema.create('list', JSON.parse(req.requestBody));
+        return new Response(200, {}, { lists });
       });
-      this.post('api/cards', (schema: AppSchema, req) => {
-        return schema.create('card', JSON.parse(req.requestBody));
-      });
-      this.post('api/cards', (schema: AppSchema, req) => {
-        return schema.create('comment', JSON.parse(req.requestBody));
-      });
+      this.get('api/:userId/lists/:listId/cards', (schema: AppSchema, req) => {
+        const list = schema.findBy('list', { userId: req.params.userId });
 
-      this.delete('api/cards/:id', (schema: AppSchema, req) => {
-        const targetCard = schema.find('card', req.params.id);
+        return new Response(200, {}, { cards: list?.cards || [] });
+      });
+      this.get(
+        'api/:userId/lists/:listId/cards/:cardId/comments',
+        (schema: AppSchema, req) => {
+          const list = schema.findBy('list', { userId: req.params.userId });
 
-        if (targetCard) {
-          targetCard.destroy();
-          return new Response(204);
+          return new Response(
+            200,
+            {},
+            {
+              comments:
+                list?.comments.filter(
+                  (comment) => comment.cardId === req.params.cardId
+                ) || [],
+            }
+          );
         }
+      );
 
-        return new Response(404);
+      this.post('api/:userId/lists', (schema: AppSchema, req) => {
+        const newList: IList = JSON.parse(req.requestBody);
+
+        schema.create('list', newList);
+
+        return new Response(201, {}, { list: newList });
       });
-      this.delete('api/comments/:id', (schema: AppSchema, req) => {
-        const targetComment = schema.find('comment', req.params.id);
+      this.post('api/:userId/lists/:listId/cards', (schema: AppSchema, req) => {
+        const newCard = JSON.parse(req.requestBody);
 
-        if (targetComment) {
-          targetComment.destroy();
-          return new Response(204);
+        const list = schema.findBy('list', {
+          userId: req.params.userId,
+          id: req.params.listId,
+        });
+
+        if (!list) return new Response(404);
+
+        list.update({ cards: [...list.cards, newCard] });
+
+        return new Response(201, {}, { cards: list.cards });
+      });
+      this.post(
+        'api/:userId/lists/:listId/cards/:cardId/comments',
+        (schema: AppSchema, req) => {
+          const newComment = JSON.parse(req.requestBody);
+
+          const list = schema.findBy('list', {
+            userId: req.params.userId,
+            id: req.params.listId,
+          });
+
+          if (!list) return new Response(404);
+
+          list.update({ comments: [...list.comments, newComment] });
+
+          return new Response(201, {}, { comments: list.comments });
         }
+      );
 
-        return new Response(404);
-      });
+      this.delete(
+        'api/:userId/lists/:listId/cards/:cardId',
+        (schema: AppSchema, req) => {
+          const list = schema.findBy('list', {
+            userId: req.params.userId,
+            id: req.params.listId,
+          });
+
+          if (!list) return new Response(404);
+
+          list.update({
+            cards: list.cards.filter((card) => card.id !== req.params.cardId),
+          });
+
+          return new Response(200, {}, { lists: list.cards });
+        }
+      );
+      this.delete(
+        'api/users/:userId/lists/:listId/cards/:cardId/comment/:commentId',
+        (schema: AppSchema, req) => {
+          const list = schema.findBy('list', {
+            userId: req.params.userId,
+            id: req.params.listId,
+          });
+
+          if (!list) return new Response(404);
+
+          list.update({
+            comments: list.comments.filter(
+              (comment) => comment.id !== req.params.commentId
+            ),
+          });
+
+          return new Response(200, {}, { comments: list.comments });
+        }
+      );
     },
   });
 }

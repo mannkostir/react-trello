@@ -1,7 +1,11 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { RootStateKeys } from 'constants/localStorageKeys';
+import { card } from 'pages/BoardPage/components/Card/Card.module.css';
+import { useSelector } from 'react-redux';
+import { RootState } from 'store';
 import { Card, Comment, List } from 'types/BoardPage.types';
 import { IBoardState } from 'types/store.types';
+import API from 'utils/API';
 import { createUUID } from 'utils/createUUID';
 
 export const defaultBoard: IBoardState = localStorage.getItem('boardState')
@@ -16,6 +20,124 @@ export const defaultBoard: IBoardState = localStorage.getItem('boardState')
       cards: [],
       comments: [],
     };
+
+const getAllLists = createAsyncThunk(
+  'lists/getAllByUserId',
+  async (userId: string) => {
+    const api = new API(userId);
+
+    const res = await api.getLists();
+
+    return res.lists;
+  }
+);
+const getAllCards = createAsyncThunk(
+  'cards/getAllByListId',
+  async ({ userId, listId }: { userId: string; listId: string }) => {
+    const api = new API(userId);
+
+    const res = await api.getCards(listId);
+    return res.cards;
+  }
+);
+const getAllComments = createAsyncThunk(
+  'comments/getAllByCardId',
+  async ({
+    userId,
+    listId,
+    cardId,
+  }: {
+    userId: string;
+    listId: string;
+    cardId: string;
+  }) => {
+    const api = new API(userId);
+
+    const res = await api.getComments(listId, cardId);
+
+    return res.comments;
+  }
+);
+const createList = createAsyncThunk(
+  'lists/createList',
+  async ({ userId, listData }: { userId: string; listData: List }) => {
+    const api = new API(userId);
+
+    const res = await api.createList({ ...listData, cards: [], comments: [] });
+
+    return res.lists;
+  }
+);
+const createCard = createAsyncThunk(
+  'cards/createCard',
+  async ({ userId, cardData }: { userId: string; cardData: Card }) => {
+    const api = new API(userId);
+
+    const res = await api.createCard(cardData.listId, cardData);
+
+    return res.cards;
+  }
+);
+const createComment = createAsyncThunk(
+  'comments/createComments',
+  async ({
+    userId,
+    listId,
+    commentData,
+  }: {
+    userId: string;
+    listId: string;
+    commentData: Comment;
+  }) => {
+    const api = new API(userId);
+
+    const res = await api.createComment(
+      listId,
+      commentData.cardId,
+      commentData
+    );
+
+    return res.comments;
+  }
+);
+const deleteCard = createAsyncThunk(
+  'comments/deleteCard',
+  async ({
+    userId,
+    cardData,
+  }: {
+    userId: string;
+    cardData: Pick<Card, 'id' | 'listId'>;
+  }) => {
+    const api = new API(userId);
+
+    const res = await api.deleteCard(cardData.listId, cardData.id);
+
+    return res.cards;
+  }
+);
+const deleteComment = createAsyncThunk(
+  'comments/deleteComment',
+  async ({
+    userId,
+    listId,
+    commentData,
+  }: {
+    userId: string;
+    listId: string;
+    commentData: Pick<Comment, 'cardId' | 'id'>;
+  }) => {
+    const api = new API(userId);
+
+    const res = await api.deleteComment(
+      listId,
+      commentData.cardId,
+      commentData.id
+    );
+
+    return res.comments;
+  }
+);
 
 const boardSlice = createSlice({
   name: 'board',
@@ -116,6 +238,48 @@ const boardSlice = createSlice({
 
       localStorage.setItem(RootStateKeys.BOARD_STATE, JSON.stringify(state));
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(
+        getAllLists.fulfilled,
+        (state, action: PayloadAction<List[]>) => {
+          state.lists = action.payload;
+        }
+      )
+      .addCase(
+        getAllCards.fulfilled,
+        (state, action: PayloadAction<Card[]>) => {
+          state.cards = action.payload;
+        }
+      )
+      .addCase(
+        getAllComments.fulfilled,
+        (state, action: PayloadAction<Comment[]>) => {
+          state.comments = action.payload;
+        }
+      )
+      .addCase(createList.fulfilled, (state, action: PayloadAction<List[]>) => {
+        state.lists = action.payload;
+      })
+      .addCase(createCard.fulfilled, (state, action: PayloadAction<Card[]>) => {
+        state.cards = action.payload;
+      })
+      .addCase(
+        createComment.fulfilled,
+        (state, action: PayloadAction<Comment[]>) => {
+          state.comments = action.payload;
+        }
+      )
+      .addCase(deleteCard.fulfilled, (state, action: PayloadAction<Card[]>) => {
+        state.cards = action.payload;
+      })
+      .addCase(
+        deleteComment.fulfilled,
+        (state, action: PayloadAction<Comment[]>) => {
+          state.comments = action.payload;
+        }
+      );
   },
 });
 

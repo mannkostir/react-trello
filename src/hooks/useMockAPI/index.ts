@@ -1,0 +1,1 @@
+export { useMockAPI } from './useMockAPI';
