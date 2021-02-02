@@ -1,12 +1,16 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { State } from 'types/store.types';
-import boardReducer, { defaultBoard } from './board/boardSlice';
 import usersReducer, { defaultUsers } from './users/usersSlice';
 import authReducer, { defaultAuth } from './auth/authSlice';
+import listsReducer, { defaultLists } from './lists/listsSlice';
+import cardsReducer, { defaultCards } from './cards/cardsSlice';
+import commentsReducer, { defaultComments } from './comments/commentsSlice';
 import { Provider } from 'react-redux';
 
 export let defaultState: State = {
-  board: defaultBoard,
+  lists: defaultLists,
+  cards: defaultCards,
+  comments: defaultComments,
   users: defaultUsers,
   auth: defaultAuth,
 };
@@ -16,7 +20,9 @@ interface IStoreProps {
 }
 
 const rootReducer = combineReducers({
-  board: boardReducer,
+  lists: listsReducer,
+  cards: cardsReducer,
+  comments: commentsReducer,
   auth: authReducer,
   users: usersReducer,
 });

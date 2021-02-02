@@ -1,21 +1,21 @@
 import { List, Card, Comment, User } from './BoardPage.types';
 
-export interface IBoardState {
-  lists: List[];
-  cards: Card[];
-  comments: Comment[];
-}
+export type CardsState = Card[];
 
-export interface IUsersState {
-  users: User[];
-}
+export type ListsState = List[];
 
-export interface IAuthState {
+export type CommentsState = Comment[];
+
+export type UsersState = User[];
+
+export type AuthState = {
   currentUser: User | null;
-}
+};
 
 export type State = {
-  board: IBoardState;
-  users: IUsersState;
-  auth: IAuthState;
+  cards: CardsState;
+  lists: ListsState;
+  comments: CommentsState;
+  users: UsersState;
+  auth: AuthState;
 };

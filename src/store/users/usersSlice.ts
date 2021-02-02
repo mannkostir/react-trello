@@ -1,31 +1,29 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootStateKeys } from 'constants/localStorageKeys';
 import { User } from 'types/BoardPage.types';
-import { IUsersState } from 'types/store.types';
+import { UsersState } from 'types/store.types';
 
-export const defaultUsers: IUsersState = localStorage.getItem('usersState')
+export const defaultUsers: UsersState = localStorage.getItem('usersState')
   ? JSON.parse(localStorage.getItem('usersState') || '')
-  : {
-      users: [],
-    };
+  : [];
 
 const usersSlice = createSlice({
   name: 'users',
   initialState: defaultUsers,
   reducers: {
-    addUser(state, action: PayloadAction<User>) {
-      state.users.push(action.payload);
+    addUser(users, action: PayloadAction<User>) {
+      users.push(action.payload);
 
-      localStorage.setItem(RootStateKeys.USERS_STATE, JSON.stringify(state));
+      localStorage.setItem(RootStateKeys.USERS_STATE, JSON.stringify(users));
     },
-    removeUser(state, action: PayloadAction<User>) {
-      const targetIndex = state.users.findIndex(
+    removeUser(users, action: PayloadAction<User>) {
+      const targetIndex = users.findIndex(
         (user) => user.id === action.payload.id
       );
 
-      state.users.splice(targetIndex, 1);
+      users.splice(targetIndex, 1);
 
-      localStorage.setItem(RootStateKeys.USERS_STATE, JSON.stringify(state));
+      localStorage.setItem(RootStateKeys.USERS_STATE, JSON.stringify(users));
     },
   },
 });

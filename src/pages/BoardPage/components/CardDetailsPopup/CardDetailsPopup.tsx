@@ -5,14 +5,12 @@ import { useInput } from 'hooks/useInput';
 import { Card, Comment, User } from 'types/BoardPage.types';
 import styles from './CardDetailsPopup.module.css';
 import addComponentStyles from 'styles/AddComponent.module.css';
+import { editCard, removeCard } from 'store/cards/cardsSlice';
 import {
   addComment,
-  editCard,
   editComment,
   removeComment,
-  removeCard,
-  createComment,
-} from 'store/board/boardSlice';
+} from 'store/comments/commentsSlice';
 
 interface ICardDetailsData {
   card: Card;
@@ -78,21 +76,12 @@ const CardDetailsPopup = ({
 
     if (currentUser?.username) {
       dispatch(
-        createComment({
-          commentData: {
-            author: currentUser.username,
-            content: comment,
-            cardId: card.id,
-          },
+        addComment({
+          cardId: card.id,
+          content: comment,
+          author: currentUser.username,
         })
       );
-      // dispatch(
-      //   addComment({
-      //     cardId: card.id,
-      //     content: comment,
-      //     author: currentUser.username,
-      //   })
-      // );
     } else {
       throw new Error('401, Unauthorized');
     }

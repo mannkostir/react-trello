@@ -9,7 +9,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addUser } from 'store/users/usersSlice';
 import { createUUID } from 'utils/createUUID';
 import { signIn, signOut } from 'store/auth/authSlice';
-import { User } from 'types/BoardPage.types';
 import makeServer from './mockServer';
 
 interface AuthCredentials {
@@ -21,8 +20,8 @@ makeServer();
 
 function App() {
   const state = useSelector((state: RootState) => ({
-    ...state.auth,
-    ...state.users,
+    auth: state.auth,
+    users: state.users,
   }));
   const dispatch = useDispatch();
 
@@ -69,15 +68,15 @@ function App() {
   };
 
   const handleSignOut = () => {
-    if (state.currentUser?.id) {
-      dispatch(signOut({ id: state.currentUser.id }));
+    if (state.auth.currentUser?.id) {
+      dispatch(signOut());
     }
   };
 
   useEffect(() => {
-    if (state.currentUser?.id) {
+    if (state.auth.currentUser?.id) {
       const candidate = state.users.find(
-        (user) => user.id === state.currentUser!.id
+        (user) => user.id === state.auth.currentUser!.id
       );
 
       if (candidate) {
@@ -94,7 +93,7 @@ function App() {
         toggleSignUpPopup={() =>
           setIsShowingSingUpPopup((isShowing) => !isShowing)
         }
-        currentUser={state.currentUser}
+        currentUser={state.auth.currentUser}
         signOut={handleSignOut}
       />
       <SignInPopup

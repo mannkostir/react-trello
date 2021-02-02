@@ -3,13 +3,14 @@ import CardsList from '../CardsList';
 import styles from './BoardPageLists.module.css';
 import addComponentStyles from 'styles/AddComponent.module.css';
 import { useForm } from 'hooks/useForm';
-import { State } from 'types/store.types';
-import { addList, createList, getBoardState } from 'store/board/boardSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store';
+import { addList, getLists } from 'store/lists/listsSlice';
 
 const BoardPageLists = () => {
-  const state = useSelector((state: RootState) => state);
+  const { lists, auth, cards, comments } = useSelector(
+    (state: RootState) => state
+  );
   const dispatch = useDispatch();
 
   const [isAddingList, setIsAddingList] = useState(false);
@@ -17,7 +18,7 @@ const BoardPageLists = () => {
   const { handleChange, keyValueMap } = useForm();
 
   useEffect(() => {
-    dispatch(getBoardState(state.auth.currentUser?.id || ''));
+    dispatch(getLists());
   }, []);
 
   const handleListFormSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -27,12 +28,6 @@ const BoardPageLists = () => {
 
     if (listTitle) {
       dispatch(addList({ title: listTitle }));
-      // dispatch(
-      //   createList({
-      //     userId: state.auth.currentUser?.id || null,
-      //     listData: { title: listTitle },
-      //   })
-      // );
     }
 
     setIsAddingList(false);
@@ -40,14 +35,14 @@ const BoardPageLists = () => {
 
   return (
     <div className={`${styles.lists} row`}>
-      {state.board.lists.map((list) => (
+      {lists.map((list) => (
         <div className={`${styles.list} col`} key={list.id}>
           <CardsList
             listTitle={list.title}
             currentListId={list.id}
-            cards={state.board.cards.filter((card) => card.listId === list.id)}
-            comments={state.board.comments}
-            currentUser={state.auth.currentUser}
+            cards={cards.filter((card) => card.listId === list.id)}
+            comments={comments}
+            currentUser={auth.currentUser}
           />
         </div>
       ))}
@@ -82,8 +77,7 @@ const BoardPageLists = () => {
               className={addComponentStyles.toggle}
               onClick={() => setIsAddingList(true)}
             >
-              +{' '}
-              {state.board.lists.length ? 'Add another column' : 'Add a column'}
+              + {lists.length ? 'Add another column' : 'Add a column'}
             </span>
           )}
         </div>

@@ -1,11 +1,12 @@
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
 import { useForm } from 'hooks/useForm';
 import * as types from 'types/BoardPage.types';
 import Card from '../Card';
 import styles from './CardsList.module.css';
 import addComponentStyles from 'styles/AddComponent.module.css';
-import { addCard, changeListTitle } from 'store/board/boardSlice';
 import { useDispatch } from 'react-redux';
+import { addCard, getCards } from 'store/cards/cardsSlice';
+import { changeListTitle } from 'store/lists/listsSlice';
 
 interface IListData {
   listTitle: string;
@@ -27,6 +28,10 @@ const CardsList = ({
   const [isAddingCard, setIsAddingCard] = useState<boolean>(false);
 
   const { keyValueMap, handleChange } = useForm();
+
+  useEffect(() => {
+    dispatch(getCards());
+  }, []);
 
   const handleCardFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

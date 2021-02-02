@@ -1,10 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootStateKeys } from 'constants/localStorageKeys';
 import { User } from 'types/BoardPage.types';
-import { IAuthState } from 'types/store.types';
+import { AuthState } from 'types/store.types';
 import { createUUID } from 'utils/createUUID';
 
-export const defaultAuth: IAuthState = localStorage.getItem(
+export const defaultAuth: AuthState = localStorage.getItem(
   RootStateKeys.AUTH_STATE
 )
   ? JSON.parse(localStorage.getItem(RootStateKeys.AUTH_STATE) || '')
@@ -29,7 +29,7 @@ const authSlice = createSlice({
 
       localStorage.setItem(RootStateKeys.AUTH_STATE, JSON.stringify(state));
     },
-    signOut(state, action: PayloadAction<Pick<User, 'id'>>) {
+    signOut(state) {
       state.currentUser = null;
 
       localStorage.setItem(RootStateKeys.AUTH_STATE, JSON.stringify(state));
