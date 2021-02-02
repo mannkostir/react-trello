@@ -202,14 +202,14 @@ const boardSlice = createSlice({
           state.comments = action.payload.comments;
           state.lists = action.payload.lists;
 
-          document.body.style.cursor = 'auto';
+          document.body.dataset.loading = 'fulfilled';
         }
       )
       .addCase(getBoardState.pending, (state, action) => {
-        document.body.style.cursor = 'progress';
+        document.body.dataset.loading = 'pending';
       })
       .addCase(getBoardState.rejected, (state, action) => {
-        document.body.style.cursor = 'auto';
+        document.body.dataset.loading = 'fulfilled';
       })
       .addCase(
         createList.fulfilled,
@@ -232,14 +232,14 @@ const boardSlice = createSlice({
             RootStateKeys.BOARD_STATE,
             JSON.stringify(state)
           );
-          document.body.style.cursor = 'auto';
+          document.body.dataset.loading = 'fulfilled';
         }
       )
       .addCase(createComment.pending, (state, action) => {
-        document.body.style.cursor = 'progress';
+        document.body.dataset.loading = 'pending';
       })
       .addCase(createComment.rejected, (state, action) => {
-        document.body.style.cursor = 'auto';
+        document.body.dataset.loading = 'fulfilled';
       });
   },
 });

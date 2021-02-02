@@ -2,6 +2,10 @@ body {
   margin: 0;
   background: #fafbfc;
   color: #5e6c84;
+  cursor: auto;
+}
+body[data-loading='pending'] {
+  cursor: progress;
 }
 
 h1,
