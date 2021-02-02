@@ -1,3 +1,5 @@
+import { List } from 'types/BoardPage.types';
+
 interface ICard {
   readonly id: string;
   listId: string;
@@ -21,7 +23,7 @@ interface IList {
 export default class API {
   userId: string;
 
-  constructor(userId: string | undefined) {
+  constructor(userId: string | undefined | null) {
     if (!userId) {
       throw new Error('Not authorized to make API calls');
     }
@@ -30,26 +32,15 @@ export default class API {
   }
 
   getLists = async () => {
-    const res = await fetch(`/api/${this.userId}/lists`);
-    const lists = await res.json();
+    try {
+      const res = await fetch(`api/${this.userId}/lists`);
+      const lists: IList[] = await res.json();
 
-    return { lists };
+      return { lists };
+    } catch (e) {
+      throw e;
+    }
   };
-  getCards = async (listId: string) => {
-    const res = await fetch(`/api/${this.userId}/lists/${listId}/cards`);
-    const cards = await res.json();
-
-    return { cards };
-  };
-  getComments = async (listId: string, cardId: string) => {
-    const res = await fetch(
-      `/api/${this.userId}/lists/${listId}/card/${cardId}/comments`
-    );
-    const comments = await res.json();
-
-    return { comments };
-  };
-
   createList = async (listData: IList) => {
     const res = await fetch(`/api/${this.userId}/lists`, {
       method: 'POST',
@@ -58,51 +49,8 @@ export default class API {
         'Content-Type': 'application/json',
       },
     });
-    const lists = await res.json();
+    const { list } = await res.json();
 
-    return { lists };
-  };
-  createCard = async (listId: string, cardData: ICard) => {
-    const res = await fetch(`/api/${this.userId}/lists/${listId}/cards`, {
-      method: 'POST',
-      body: JSON.stringify(cardData),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    const cards = await res.json();
-
-    return { cards };
-  };
-  createComment = async (
-    listId: string,
-    cardId: string,
-    commentData: IComment
-  ) => {
-    const res = await fetch(
-      `/api/${this.userId}/lists/${listId}/cards/${cardId}/comments`,
-      { method: 'POST', body: JSON.stringify(commentData) }
-    );
-    const comments = await res.json();
-
-    return { comments };
-  };
-
-  deleteCard = async (listId: string, cardId: string) => {
-    const res = await fetch(
-      `/api/${this.userId}/lists/${listId}/cards/${cardId}`,
-      { method: 'DELETE' }
-    );
-    const cards = await res.json();
-
-    return { cards };
-  };
-  deleteComment = async (listId: string, cardId: string, commentId: string) => {
-    const res = await fetch(
-      `/api/${this.userId}/lists/${listId}/cards/${cardId}/comments/${commentId}`
-    );
-    const comments = await res.json();
-
-    return { comments };
+    return { list };
   };
 }

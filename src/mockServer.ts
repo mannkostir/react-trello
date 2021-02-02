@@ -1,12 +1,15 @@
-import { createServer, Model, Registry, Response } from 'miragejs';
+import { createServer, Model, Registry, Response, Factory } from 'miragejs';
 import { ModelDefinition } from 'miragejs/-types';
 import Schema from 'miragejs/orm/schema';
+import MockDB from 'utils/MockDB';
 
 interface ICard {
   readonly id: string;
   listId: string;
   title: string;
   description?: string;
+  comments: IComment[];
+  readonly userId: string | null;
 }
 interface IComment {
   readonly id: string;
@@ -17,10 +20,8 @@ interface IComment {
 }
 interface IList {
   readonly id: string;
-  readonly userId: string;
   title: string;
   cards: ICard[];
-  comments: IComment[];
 }
 
 const ListModel: ModelDefinition<IList> = Model.extend({});
@@ -37,117 +38,77 @@ type AppRegistry = Registry<
 >;
 type AppSchema = Schema<AppRegistry>;
 
-export default function () {
-  createServer({
+const mockDB = new MockDB();
+
+export default function makeServer() {
+  return createServer({
     models: {
       list: ListModel,
       card: Model,
       comment: Model,
     },
+    seeds(server) {
+      server.db.loadData(
+        localStorage.getItem('db')
+          ? JSON.parse(localStorage.getItem('db')!)
+          : {
+              lists: [],
+              cards: [],
+              comments: [],
+            }
+      );
+    },
     routes() {
       this.get('api/:userId/lists', (schema: AppSchema, req) => {
-        const lists = schema.findBy('list', { userId: req.params.userId });
-
-        return new Response(200, {}, { lists });
-      });
-      this.get('api/:userId/lists/:listId/cards', (schema: AppSchema, req) => {
-        const list = schema.findBy('list', { userId: req.params.userId });
-
-        return new Response(200, {}, { cards: list?.cards || [] });
-      });
-      this.get(
-        'api/:userId/lists/:listId/cards/:cardId/comments',
-        (schema: AppSchema, req) => {
-          const list = schema.findBy('list', { userId: req.params.userId });
-
-          return new Response(
-            200,
-            {},
-            {
-              comments:
-                list?.comments.filter(
-                  (comment) => comment.cardId === req.params.cardId
-                ) || [],
+        const lists = schema.all('list').models.map((list) => {
+          schema.all('card').models.forEach((card) => {
+            if (card.listId === list.id) {
+              schema.all('comment').models.forEach((comment) => {
+                if (comment.cardId === card.id) {
+                  card.comments.push(comment);
+                }
+              });
+              list.cards.push(card);
             }
-          );
-        }
-      );
+          });
+        });
 
-      this.post('api/:userId/lists', (schema: AppSchema, req) => {
+        return new Response(200, {}, lists);
+      });
+      this.post('api/:userId/board/lists', (schema: AppSchema, req) => {
         const newList: IList = JSON.parse(req.requestBody);
 
         schema.create('list', newList);
 
+        mockDB.setItem('db', JSON.stringify(schema.db));
+
         return new Response(201, {}, { list: newList });
       });
-      this.post('api/:userId/lists/:listId/cards', (schema: AppSchema, req) => {
-        const newCard = JSON.parse(req.requestBody);
+      this.patch(
+        'api/:userId/board/lists/:listId',
+        (schema: AppSchema, req) => {
+          const update: IList = JSON.parse(req.requestBody);
 
-        const list = schema.findBy('list', {
-          userId: req.params.userId,
-          id: req.params.listId,
-        });
+          const list = schema.findBy('list', {
+            id: req.params.listId,
+          });
 
-        if (!list) return new Response(404);
+          if (!list) return new Response(404);
 
-        list.update({ cards: [...list.cards, newCard] });
+          list.update(update);
 
-        return new Response(201, {}, { cards: list.cards });
+          return new Response(201, {}, { list });
+        }
+      );
+      this.post('api/:userId/board/cards', (schema: AppSchema, req) => {
+        const newCard: ICard = JSON.parse(req.requestBody);
+
+        schema.create('card', newCard);
+
+        mockDB.setItem('db', JSON.stringify(schema.db));
+
+        return new Response(201, {}, { card: newCard });
       });
-      this.post(
-        'api/:userId/lists/:listId/cards/:cardId/comments',
-        (schema: AppSchema, req) => {
-          const newComment = JSON.parse(req.requestBody);
-
-          const list = schema.findBy('list', {
-            userId: req.params.userId,
-            id: req.params.listId,
-          });
-
-          if (!list) return new Response(404);
-
-          list.update({ comments: [...list.comments, newComment] });
-
-          return new Response(201, {}, { comments: list.comments });
-        }
-      );
-
-      this.delete(
-        'api/:userId/lists/:listId/cards/:cardId',
-        (schema: AppSchema, req) => {
-          const list = schema.findBy('list', {
-            userId: req.params.userId,
-            id: req.params.listId,
-          });
-
-          if (!list) return new Response(404);
-
-          list.update({
-            cards: list.cards.filter((card) => card.id !== req.params.cardId),
-          });
-
-          return new Response(200, {}, { lists: list.cards });
-        }
-      );
-      this.delete(
-        'api/users/:userId/lists/:listId/cards/:cardId/comment/:commentId',
-        (schema: AppSchema, req) => {
-          const list = schema.findBy('list', {
-            userId: req.params.userId,
-            id: req.params.listId,
-          });
-
-          if (!list) return new Response(404);
-
-          list.update({
-            comments: list.comments.filter(
-              (comment) => comment.id !== req.params.commentId
-            ),
-          });
-
-          return new Response(200, {}, { comments: list.comments });
-        }
-      );
     },
   });
 }

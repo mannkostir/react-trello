@@ -10,11 +10,14 @@ import { addUser } from 'store/users/usersSlice';
 import { createUUID } from 'utils/createUUID';
 import { signIn, signOut } from 'store/auth/authSlice';
 import { User } from 'types/BoardPage.types';
+import makeServer from './mockServer';
 
 interface AuthCredentials {
   username: string;
   password: string;
 }
+
+makeServer();
 
 function App() {
   const state = useSelector((state: RootState) => ({

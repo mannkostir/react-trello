@@ -1,143 +1,94 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { RootStateKeys } from 'constants/localStorageKeys';
-import { card } from 'pages/BoardPage/components/Card/Card.module.css';
-import { useSelector } from 'react-redux';
-import { RootState } from 'store';
 import { Card, Comment, List } from 'types/BoardPage.types';
 import { IBoardState } from 'types/store.types';
 import API from 'utils/API';
 import { createUUID } from 'utils/createUUID';
 
-export const defaultBoard: IBoardState = localStorage.getItem('boardState')
+export const defaultBoard: IBoardState = false
   ? JSON.parse(localStorage.getItem('boardState') || '')
   : {
       lists: [
-        { id: '1', title: 'To Do' },
-        { id: '2', title: 'In Progress' },
-        { id: '3', title: 'Testing' },
-        { id: '4', title: 'Done' },
+        // { id: '1', title: 'To Do' },
+        // { id: '2', title: 'In Progress' },
+        // { id: '3', title: 'Testing' },
+        // { id: '4', title: 'Done' },
       ],
       cards: [],
       comments: [],
     };
 
-const getAllLists = createAsyncThunk(
-  'lists/getAllByUserId',
+export const getBoardState = createAsyncThunk(
+  'boardState/getState',
   async (userId: string) => {
-    const api = new API(userId);
+    const getLists = () =>
+      new Promise<IBoardState>((resolve, reject) => {
+        setTimeout(() => {
+          const state: IBoardState = localStorage.getItem('boardState')
+            ? JSON.parse(localStorage.getItem('boardState')!)
+            : {
+                lists: [
+                  { id: '1', title: 'To Do' },
+                  { id: '2', title: 'In Progress' },
+                  { id: '3', title: 'Testing' },
+                  { id: '4', title: 'Done' },
+                ],
+                cards: [],
+                comments: [],
+              };
 
-    const res = await api.getLists();
-
-    return res.lists;
+          resolve(state);
+        }, 2000);
+      });
+    const result = await getLists();
+    return result;
   }
 );
-const getAllCards = createAsyncThunk(
-  'cards/getAllByListId',
-  async ({ userId, listId }: { userId: string; listId: string }) => {
-    const api = new API(userId);
-
-    const res = await api.getCards(listId);
-    return res.cards;
-  }
-);
-const getAllComments = createAsyncThunk(
-  'comments/getAllByCardId',
-  async ({
-    userId,
-    listId,
-    cardId,
-  }: {
-    userId: string;
-    listId: string;
-    cardId: string;
-  }) => {
-    const api = new API(userId);
-
-    const res = await api.getComments(listId, cardId);
-
-    return res.comments;
-  }
-);
-const createList = createAsyncThunk(
+export const createList = createAsyncThunk(
   'lists/createList',
-  async ({ userId, listData }: { userId: string; listData: List }) => {
-    const api = new API(userId);
-
-    const res = await api.createList({ ...listData, cards: [], comments: [] });
-
-    return res.lists;
-  }
-);
-const createCard = createAsyncThunk(
-  'cards/createCard',
-  async ({ userId, cardData }: { userId: string; cardData: Card }) => {
-    const api = new API(userId);
-
-    const res = await api.createCard(cardData.listId, cardData);
-
-    return res.cards;
-  }
-);
-const createComment = createAsyncThunk(
-  'comments/createComments',
   async ({
     userId,
-    listId,
+    listData,
+  }: {
+    userId: string | null;
+    listData: Pick<List, 'title'>;
+  }) => {
+    const createList = () => {
+      return new Promise<typeof listData>((resolve, reject) => {
+        setTimeout(() => {
+          resolve(listData);
+        }, 1000);
+      });
+    };
+
+    const result = await createList();
+
+    return result;
+  }
+);
+
+export const createComment = createAsyncThunk(
+  'comments/createComment',
+  async ({
     commentData,
   }: {
-    userId: string;
-    listId: string;
-    commentData: Comment;
+    commentData: Pick<Comment, 'author' | 'content' | 'cardId'>;
   }) => {
-    const api = new API(userId);
+    const createComment = () => {
+      return new Promise<typeof commentData>((resolve, reject) => {
+        setTimeout(() => {
+          resolve(commentData);
+        }, 1000);
+      });
+    };
 
-    const res = await api.createComment(
-      listId,
-      commentData.cardId,
-      commentData
-    );
+    const result = await createComment();
 
-    return res.comments;
+    return result;
   }
 );
-const deleteCard = createAsyncThunk(
-  'comments/deleteCard',
-  async ({
-    userId,
-    cardData,
-  }: {
-    userId: string;
-    cardData: Pick<Card, 'id' | 'listId'>;
-  }) => {
-    const api = new API(userId);
 
-    const res = await api.deleteCard(cardData.listId, cardData.id);
-
-    return res.cards;
-  }
-);
-const deleteComment = createAsyncThunk(
-  'comments/deleteComment',
-  async ({
-    userId,
-    listId,
-    commentData,
-  }: {
-    userId: string;
-    listId: string;
-    commentData: Pick<Comment, 'cardId' | 'id'>;
-  }) => {
-    const api = new API(userId);
-
-    const res = await api.deleteComment(
-      listId,
-      commentData.cardId,
-      commentData.id
-    );
-
-    return res.comments;
-  }
-);
+export type BoardAction = ReturnType<typeof getBoardState>;
 
 const boardSlice = createSlice({
   name: 'board',
@@ -158,6 +109,8 @@ const boardSlice = createSlice({
       );
 
       state.lists[targetIndex].title = action.payload.title;
+
+      localStorage.setItem(RootStateKeys.BOARD_STATE, JSON.stringify(state));
     },
     removeList(state, action: PayloadAction<Pick<List, 'id'>>) {
       const targetIndex = state.lists.findIndex(
@@ -242,44 +195,52 @@ const boardSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(
-        getAllLists.fulfilled,
-        (state, action: PayloadAction<List[]>) => {
-          state.lists = action.payload;
+        getBoardState.fulfilled,
+        (state, action: PayloadAction<IBoardState>) => {
+          console.log(state.lists);
+          state.cards = action.payload.cards;
+          state.comments = action.payload.comments;
+          state.lists = action.payload.lists;
+
+          document.body.style.cursor = 'auto';
         }
       )
-      .addCase(
-        getAllCards.fulfilled,
-        (state, action: PayloadAction<Card[]>) => {
-          state.cards = action.payload;
-        }
-      )
-      .addCase(
-        getAllComments.fulfilled,
-        (state, action: PayloadAction<Comment[]>) => {
-          state.comments = action.payload;
-        }
-      )
-      .addCase(createList.fulfilled, (state, action: PayloadAction<List[]>) => {
-        state.lists = action.payload;
+      .addCase(getBoardState.pending, (state, action) => {
+        document.body.style.cursor = 'progress';
       })
-      .addCase(createCard.fulfilled, (state, action: PayloadAction<Card[]>) => {
-        state.cards = action.payload;
+      .addCase(getBoardState.rejected, (state, action) => {
+        document.body.style.cursor = 'auto';
       })
+      .addCase(
+        createList.fulfilled,
+        (state, action: PayloadAction<Pick<List, 'title'>>) => {
+          let uuid: string = createUUID();
+          state.lists.push({ ...action.payload, id: uuid });
+        }
+      )
       .addCase(
         createComment.fulfilled,
-        (state, action: PayloadAction<Comment[]>) => {
-          state.comments = action.payload;
+        (
+          state,
+          action: PayloadAction<Pick<Comment, 'content' | 'author' | 'cardId'>>
+        ) => {
+          let uuid: string = createUUID();
+          let date = new Date().toLocaleTimeString();
+          state.comments.push({ ...action.payload, id: uuid, date });
+
+          localStorage.setItem(
+            RootStateKeys.BOARD_STATE,
+            JSON.stringify(state)
+          );
+          document.body.style.cursor = 'auto';
         }
       )
-      .addCase(deleteCard.fulfilled, (state, action: PayloadAction<Card[]>) => {
-        state.cards = action.payload;
+      .addCase(createComment.pending, (state, action) => {
+        document.body.style.cursor = 'progress';
       })
-      .addCase(
-        deleteComment.fulfilled,
-        (state, action: PayloadAction<Comment[]>) => {
-          state.comments = action.payload;
-        }
-      );
+      .addCase(createComment.rejected, (state, action) => {
+        document.body.style.cursor = 'auto';
+      });
   },
 });
 

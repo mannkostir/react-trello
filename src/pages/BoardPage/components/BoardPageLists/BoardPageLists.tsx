@@ -1,10 +1,10 @@
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
 import CardsList from '../CardsList';
 import styles from './BoardPageLists.module.css';
 import addComponentStyles from 'styles/AddComponent.module.css';
 import { useForm } from 'hooks/useForm';
 import { State } from 'types/store.types';
-import { addList } from 'store/board/boardSlice';
+import { addList, createList, getBoardState } from 'store/board/boardSlice';
 
 interface IListsData {
   state: State;
@@ -16,6 +16,10 @@ const BoardPageLists = ({ state, dispatch }: IListsData) => {
 
   const { handleChange, keyValueMap } = useForm();
 
+  useEffect(() => {
+    dispatch(getBoardState(state.auth.currentUser?.id || ''));
+  }, []);
+
   const handleListFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -23,6 +27,12 @@ const BoardPageLists = ({ state, dispatch }: IListsData) => {
 
     if (listTitle) {
       dispatch(addList({ title: listTitle }));
+      // dispatch(
+      //   createList({
+      //     userId: state.auth.currentUser?.id || null,
+      //     listData: { title: listTitle },
+      //   })
+      // );
     }
 
     setIsAddingList(false);

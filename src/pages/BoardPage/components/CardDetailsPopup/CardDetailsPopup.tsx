@@ -11,6 +11,7 @@ import {
   editComment,
   removeComment,
   removeCard,
+  createComment,
 } from 'store/board/boardSlice';
 
 interface ICardDetailsData {
@@ -77,12 +78,21 @@ const CardDetailsPopup = ({
 
     if (currentUser?.username) {
       dispatch(
-        addComment({
-          cardId: card.id,
-          content: comment,
-          author: currentUser.username,
+        createComment({
+          commentData: {
+            author: currentUser.username,
+            content: comment,
+            cardId: card.id,
+          },
         })
       );
+      // dispatch(
+      //   addComment({
+      //     cardId: card.id,
+      //     content: comment,
+      //     author: currentUser.username,
+      //   })
+      // );
     }
 
     if (commentInput.current) {
