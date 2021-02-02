@@ -93,6 +93,8 @@ const CardDetailsPopup = ({
       //     author: currentUser.username,
       //   })
       // );
+    } else {
+      throw new Error('401, Unauthorized');
     }
 
     if (commentInput.current) {
