@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import * as types from 'types/BoardPage.types';
 import CardDetailsPopup from '../CardDetailsPopup';
 import styles from './Card.module.css';
@@ -8,16 +9,11 @@ interface ICardData {
   comments: types.Comment[];
   listTitle: string;
   currentUser: types.User | null;
-  dispatch: React.Dispatch<any>;
 }
 
-const Card = ({
-  card,
-  comments,
-  listTitle,
-  dispatch,
-  currentUser,
-}: ICardData) => {
+const Card = ({ card, comments, listTitle, currentUser }: ICardData) => {
+  const dispatch = useDispatch();
+
   const [isPopupVisible, setIsPopupVisible] = useState(false);
 
   const togglePopup = () => setIsPopupVisible((isVisible) => !isVisible);

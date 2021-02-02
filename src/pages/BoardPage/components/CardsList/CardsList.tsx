@@ -5,13 +5,13 @@ import Card from '../Card';
 import styles from './CardsList.module.css';
 import addComponentStyles from 'styles/AddComponent.module.css';
 import { addCard, changeListTitle } from 'store/board/boardSlice';
+import { useDispatch } from 'react-redux';
 
 interface IListData {
   listTitle: string;
   cards: types.Card[];
   comments: types.Comment[];
   currentListId: string;
-  dispatch: React.Dispatch<any>;
   currentUser: types.User | null;
 }
 
@@ -20,9 +20,10 @@ const CardsList = ({
   listTitle,
   currentListId,
   comments,
-  dispatch,
   currentUser,
 }: IListData) => {
+  const dispatch = useDispatch();
+
   const [isAddingCard, setIsAddingCard] = useState<boolean>(false);
 
   const { keyValueMap, handleChange } = useForm();
@@ -77,7 +78,6 @@ const CardsList = ({
             card={card}
             key={index}
             comments={comments.filter((comment) => comment.cardId === card.id)}
-            dispatch={dispatch}
             currentUser={currentUser}
           />
         ))}

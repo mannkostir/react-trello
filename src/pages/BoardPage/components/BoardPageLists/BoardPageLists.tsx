@@ -5,13 +5,13 @@ import addComponentStyles from 'styles/AddComponent.module.css';
 import { useForm } from 'hooks/useForm';
 import { State } from 'types/store.types';
 import { addList, createList, getBoardState } from 'store/board/boardSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from 'store';
 
-interface IListsData {
-  state: State;
-  dispatch: React.Dispatch<any>;
-}
+const BoardPageLists = () => {
+  const state = useSelector((state: RootState) => state);
+  const dispatch = useDispatch();
 
-const BoardPageLists = ({ state, dispatch }: IListsData) => {
   const [isAddingList, setIsAddingList] = useState(false);
 
   const { handleChange, keyValueMap } = useForm();
@@ -46,7 +46,6 @@ const BoardPageLists = ({ state, dispatch }: IListsData) => {
             listTitle={list.title}
             currentListId={list.id}
             cards={state.board.cards.filter((card) => card.listId === list.id)}
-            dispatch={dispatch}
             comments={state.board.comments}
             currentUser={state.auth.currentUser}
           />
