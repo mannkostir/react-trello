@@ -98,6 +98,7 @@ const CardDetailsPopup = ({
               in list <span className={styles.listTitle}>{listTitle}</span>
             </div>
           </div>
+          <span>Author: {card.author.username}</span>
           <span className={styles.popupCloseBtn} onClick={onPopupClose}>
             CLOSE
           </span>
