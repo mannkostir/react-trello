@@ -1,10 +1,19 @@
 import { List, Card, Comment, User } from './BoardPage.types';
 
-export type CardsState = Card[];
+export interface CardsState {
+  currentCards: Card[];
+  isLoading: boolean;
+}
 
-export type ListsState = List[];
+export interface ListsState {
+  currentLists: List[];
+  isLoading: boolean;
+}
 
-export type CommentsState = Comment[];
+export interface CommentsState {
+  currentComments: Comment[];
+  isLoading: boolean;
+}
 
 export type UsersState = User[];
 

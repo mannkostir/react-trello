@@ -5,12 +5,10 @@ import addComponentStyles from 'styles/AddComponent.module.css';
 import { useForm } from 'hooks/useForm';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store';
-import { addList, getLists } from 'store/lists/listsSlice';
+import { addList, getState } from 'store/lists/listsSlice';
 
 const BoardPageLists = () => {
-  const { lists, auth, cards, comments } = useSelector(
-    (state: RootState) => state
-  );
+  const state = useSelector((state: RootState) => state);
   const dispatch = useDispatch();
 
   const [isAddingList, setIsAddingList] = useState(false);
@@ -18,7 +16,7 @@ const BoardPageLists = () => {
   const { handleChange, keyValueMap } = useForm();
 
   useEffect(() => {
-    dispatch(getLists());
+    dispatch(getState());
   }, []);
 
   const handleListFormSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -35,17 +33,21 @@ const BoardPageLists = () => {
 
   return (
     <div className={`${styles.lists} row`}>
-      {lists.map((list) => (
-        <div className={`${styles.list} col`} key={list.id}>
-          <CardsList
-            listTitle={list.title}
-            currentListId={list.id}
-            cards={cards.filter((card) => card.listId === list.id)}
-            comments={comments}
-            currentUser={auth.currentUser}
-          />
-        </div>
-      ))}
+      {state.lists.isLoading
+        ? 'Loading lists...'
+        : state.lists.currentLists.map((list) => (
+            <div className={`${styles.list} col`} key={list.id}>
+              <CardsList
+                listTitle={list.title}
+                currentListId={list.id}
+                cards={state.cards.currentCards.filter(
+                  (card) => card.listId === list.id
+                )}
+                isCardsLoading={state.cards.isLoading}
+                currentUser={state.auth.currentUser}
+              />
+            </div>
+          ))}
       <div className={`${styles.list} col`}>
         <div>
           {isAddingList ? (
@@ -77,7 +79,10 @@ const BoardPageLists = () => {
               className={addComponentStyles.toggle}
               onClick={() => setIsAddingList(true)}
             >
-              + {lists.length ? 'Add another column' : 'Add a column'}
+              +{' '}
+              {state.lists.currentLists.length
+                ? 'Add another column'
+                : 'Add a column'}
             </span>
           )}
         </div>

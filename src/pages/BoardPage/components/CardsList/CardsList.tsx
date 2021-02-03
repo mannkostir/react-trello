@@ -4,25 +4,27 @@ import * as types from 'types/BoardPage.types';
 import Card from '../Card';
 import styles from './CardsList.module.css';
 import addComponentStyles from 'styles/AddComponent.module.css';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addCard, getCards } from 'store/cards/cardsSlice';
 import { changeListTitle } from 'store/lists/listsSlice';
+import { RootState } from 'store';
 
 interface IListData {
   listTitle: string;
   cards: types.Card[];
-  comments: types.Comment[];
+  isCardsLoading: boolean;
   currentListId: string;
   currentUser: types.User | null;
 }
 
 const CardsList = ({
   cards,
+  isCardsLoading,
   listTitle,
   currentListId,
-  comments,
   currentUser,
 }: IListData) => {
+  const comments = useSelector((state: RootState) => state.comments);
   const dispatch = useDispatch();
 
   const [isAddingCard, setIsAddingCard] = useState<boolean>(false);
@@ -77,15 +79,20 @@ const CardsList = ({
         </div>
       </header>
       <div className={styles.cards}>
-        {cards.map((card, index) => (
-          <Card
-            listTitle={listTitle}
-            card={card}
-            key={index}
-            comments={comments.filter((comment) => comment.cardId === card.id)}
-            currentUser={currentUser}
-          />
-        ))}
+        {isCardsLoading
+          ? 'Cards loading...'
+          : cards.map((card, index) => (
+              <Card
+                listTitle={listTitle}
+                card={card}
+                key={index}
+                comments={comments.currentComments.filter(
+                  (comment) => comment.cardId === card.id
+                )}
+                isCommentsLoading={comments.isLoading}
+                currentUser={currentUser}
+              />
+            ))}
       </div>
       <div>
         {isAddingCard ? (

@@ -7,11 +7,18 @@ import styles from './Card.module.css';
 interface ICardData {
   card: types.Card;
   comments: types.Comment[];
+  isCommentsLoading: boolean;
   listTitle: string;
   currentUser: types.User | null;
 }
 
-const Card = ({ card, comments, listTitle, currentUser }: ICardData) => {
+const Card = ({
+  card,
+  comments,
+  isCommentsLoading,
+  listTitle,
+  currentUser,
+}: ICardData) => {
   const dispatch = useDispatch();
 
   const [isPopupVisible, setIsPopupVisible] = useState(false);
@@ -23,11 +30,11 @@ const Card = ({ card, comments, listTitle, currentUser }: ICardData) => {
       <CardDetailsPopup
         card={card}
         comments={comments}
+        isCommentsLoading={isCommentsLoading}
         listTitle={listTitle}
         isPopupVisible={isPopupVisible}
         onPopupClose={() => setIsPopupVisible(false)}
         currentUser={currentUser}
-        dispatch={dispatch}
       />
       <div className={`${styles.card} card`} onClick={togglePopup}>
         <span className={styles.title}>{card.title}</span>

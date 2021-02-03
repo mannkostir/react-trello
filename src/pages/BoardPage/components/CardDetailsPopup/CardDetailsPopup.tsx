@@ -9,28 +9,32 @@ import { editCard, removeCard } from 'store/cards/cardsSlice';
 import {
   addComment,
   editComment,
+  getComments,
   removeComment,
 } from 'store/comments/commentsSlice';
+import { useDispatch } from 'react-redux';
 
 interface ICardDetailsData {
   card: Card;
   listTitle: string;
   comments: Comment[];
+  isCommentsLoading: boolean;
   isPopupVisible: boolean;
   currentUser: User | null;
   onPopupClose: () => void;
-  dispatch: React.Dispatch<any>;
 }
 
 const CardDetailsPopup = ({
   card,
   listTitle,
   comments,
+  isCommentsLoading,
   isPopupVisible,
   currentUser,
   onPopupClose = () => {},
-  dispatch,
 }: ICardDetailsData) => {
+  const dispatch = useDispatch();
+
   const [isAddingDescription, setIsAddingDescription] = useState(false);
   const [isAddingComment, setIsAddingComment] = useState(false);
   const [editingComments, setEditingComments] = useState<string[]>([]);
@@ -40,6 +44,10 @@ const CardDetailsPopup = ({
 
   const commentInput = useRef<HTMLTextAreaElement>(null);
   const descriptionTextArea = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    dispatch(getComments());
+  }, []);
 
   useEffect(() => {
     if (!descriptionTextArea.current) return;
@@ -226,70 +234,72 @@ const CardDetailsPopup = ({
               </div>
             </form>
             <ul className={styles.activityList}>
-              {comments.map((comment) => (
-                <li key={comment.id} className={styles.comment}>
-                  <header>
-                    <span className={styles.commentAuthor}>
-                      {comment.author}
-                    </span>
-                  </header>
-                  {editingComments.includes(comment.id) ? (
-                    <form
-                      onSubmit={(e) =>
-                        handleCommentEditFormSubmit(e, comment.id)
-                      }
-                    >
-                      <textarea
-                        className={`${styles.commentContent} ${addComponentStyles.textarea}`}
-                        name="newComment"
-                        onChange={handleChange}
-                        defaultValue={comment.content}
-                      />
-                      <div className={addComponentStyles.buttonsWrapper}>
-                        <button
-                          type="submit"
-                          className={addComponentStyles.submitBtn}
+              {isCommentsLoading
+                ? 'Comments loading...'
+                : comments.map((comment) => (
+                    <li key={comment.id} className={styles.comment}>
+                      <header>
+                        <span className={styles.commentAuthor}>
+                          {comment.author}
+                        </span>
+                      </header>
+                      {editingComments.includes(comment.id) ? (
+                        <form
+                          onSubmit={(e) =>
+                            handleCommentEditFormSubmit(e, comment.id)
+                          }
                         >
-                          Save
+                          <textarea
+                            className={`${styles.commentContent} ${addComponentStyles.textarea}`}
+                            name="newComment"
+                            onChange={handleChange}
+                            defaultValue={comment.content}
+                          />
+                          <div className={addComponentStyles.buttonsWrapper}>
+                            <button
+                              type="submit"
+                              className={addComponentStyles.submitBtn}
+                            >
+                              Save
+                            </button>
+                          </div>
+                        </form>
+                      ) : (
+                        <div
+                          className={`${styles.commentContent} ${addComponentStyles.textarea}`}
+                        >
+                          {comment.content}
+                        </div>
+                      )}
+                      <div className={styles.commentActions}>
+                        <button
+                          onClick={() => {
+                            checkCommentAuth({
+                              author: comment.author,
+                              id: comment.id,
+                            });
+                            setEditingComments((comments) => [
+                              ...comments,
+                              comment.id,
+                            ]);
+                          }}
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => {
+                            checkCommentAuth({
+                              author: comment.author,
+                              id: comment.id,
+                            });
+                            deleteComment(comment.id);
+                          }}
+                        >
+                          Delete
                         </button>
                       </div>
-                    </form>
-                  ) : (
-                    <div
-                      className={`${styles.commentContent} ${addComponentStyles.textarea}`}
-                    >
-                      {comment.content}
-                    </div>
-                  )}
-                  <div className={styles.commentActions}>
-                    <button
-                      onClick={() => {
-                        checkCommentAuth({
-                          author: comment.author,
-                          id: comment.id,
-                        });
-                        setEditingComments((comments) => [
-                          ...comments,
-                          comment.id,
-                        ]);
-                      }}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => {
-                        checkCommentAuth({
-                          author: comment.author,
-                          id: comment.id,
-                        });
-                        deleteComment(comment.id);
-                      }}
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </li>
-              ))}
+                    </li>
+                  ))}
             </ul>
           </div>
         </section>

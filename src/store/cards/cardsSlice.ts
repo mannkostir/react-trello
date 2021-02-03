@@ -4,7 +4,10 @@ import { Card } from 'types/BoardPage.types';
 import { CardsState } from 'types/store.types';
 import { createUUID } from 'utils/createUUID';
 
-export const defaultCards: CardsState = [];
+export const defaultCards: CardsState = {
+  currentCards: [],
+  isLoading: false,
+};
 
 export const getCards = createAsyncThunk('cards/getCards', async () => {
   const getCards = () =>
@@ -34,26 +37,26 @@ export const cardsSlice = createSlice({
 
       const { listId, title } = action.payload;
 
-      cards.push({ listId, title, id: uuid });
+      cards.currentCards.push({ listId, title, id: uuid });
 
       localStorage.setItem(RootStateKeys.CARDS_STATE, JSON.stringify(cards));
     },
     removeCard(cards, action: PayloadAction<Pick<Card, 'id'>>) {
-      const targetIndex = cards.findIndex(
+      const targetIndex = cards.currentCards.findIndex(
         (card) => card.id === action.payload.id
       );
 
-      cards.splice(targetIndex, 1);
+      cards.currentCards.splice(targetIndex, 1);
 
       localStorage.setItem(RootStateKeys.CARDS_STATE, JSON.stringify(cards));
     },
     editCard(cards, action: PayloadAction<Partial<Card>>) {
-      const targetIndex = cards.findIndex(
+      const targetIndex = cards.currentCards.findIndex(
         (card) => card.id === action.payload.id
       );
 
-      cards[targetIndex] = {
-        ...cards[targetIndex],
+      cards.currentCards[targetIndex] = {
+        ...cards.currentCards[targetIndex],
         ...action.payload,
       };
 
@@ -61,9 +64,13 @@ export const cardsSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(getCards.fulfilled, (state, action) => {
-      return action.payload;
-    });
+    builder
+      .addCase(getCards.fulfilled, (cards, action) => {
+        return { ...action.payload, isLoading: false };
+      })
+      .addCase(getCards.pending, (cards, action) => {
+        cards.isLoading = true;
+      });
   },
 });
 

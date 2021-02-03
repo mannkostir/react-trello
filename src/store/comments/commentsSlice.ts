@@ -4,7 +4,10 @@ import { Comment } from 'types/BoardPage.types';
 import { CommentsState } from 'types/store.types';
 import { createUUID } from 'utils/createUUID';
 
-export const defaultComments: CommentsState = [];
+export const defaultComments: CommentsState = {
+  currentComments: [],
+  isLoading: false,
+};
 
 export const getComments = createAsyncThunk(
   'comments/getComments',
@@ -38,7 +41,7 @@ export const commentsSlice = createSlice({
 
       const { author, cardId, content } = action.payload;
 
-      comments.push({
+      comments.currentComments.push({
         author,
         cardId,
         content,
@@ -52,11 +55,11 @@ export const commentsSlice = createSlice({
       );
     },
     removeComment(comments, action: PayloadAction<Pick<Comment, 'id'>>) {
-      const targetIndex = comments.findIndex(
+      const targetIndex = comments.currentComments.findIndex(
         (comment) => comment.id === action.payload.id
       );
 
-      comments.splice(targetIndex, 1);
+      comments.currentComments.splice(targetIndex, 1);
 
       localStorage.setItem(
         RootStateKeys.COMMENTS_STATE,
@@ -69,10 +72,12 @@ export const commentsSlice = createSlice({
     ) {
       const { content, id } = action.payload;
 
-      const targetIndex = comments.findIndex((comment) => comment.id === id);
+      const targetIndex = comments.currentComments.findIndex(
+        (comment) => comment.id === id
+      );
 
-      comments[targetIndex] = {
-        ...comments[targetIndex],
+      comments.currentComments[targetIndex] = {
+        ...comments.currentComments[targetIndex],
         content,
       };
 
@@ -83,9 +88,13 @@ export const commentsSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(getComments.fulfilled, (state, action) => {
-      return action.payload;
-    });
+    builder
+      .addCase(getComments.fulfilled, (comments, action) => {
+        return { ...action.payload, isLoading: false };
+      })
+      .addCase(getComments.pending, (comments, action) => {
+        comments.isLoading = true;
+      });
   },
 });
 
