@@ -68,8 +68,12 @@ const CardDetailsPopup = ({
         userId: currentUser?.id || null,
       })
     );
-    onPopupClose();
   };
+
+  useEffect(() => {
+    if (!card.id) onPopupClose();
+  }, [card]);
+
   const checkCardAuth = (cardData: Pick<Card, 'author'>) => {
     if (!currentUser) throw new Error('Status: 401');
 
