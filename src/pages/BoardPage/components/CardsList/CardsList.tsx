@@ -41,7 +41,15 @@ const CardsList = ({
     const cardTitle = keyValueMap.get('cardTitle');
 
     if (cardTitle) {
-      dispatch(addCard({ listId: currentListId, title: cardTitle }));
+      if (!currentUser) return;
+
+      dispatch(
+        addCard({
+          listId: currentListId,
+          title: cardTitle,
+          author: { userId: currentUser.id, username: currentUser.username },
+        })
+      );
     }
 
     setIsAddingCard(false);

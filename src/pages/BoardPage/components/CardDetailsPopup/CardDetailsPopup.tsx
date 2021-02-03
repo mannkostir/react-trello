@@ -70,6 +70,8 @@ const CardDetailsPopup = ({
   const handleDescriptionFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    checkCardAuth({ author: card.author });
+
     const newDescription = keyValueMap.get('cardDescription');
 
     dispatch(editCard({ ...card, description: newDescription }));
@@ -119,6 +121,8 @@ const CardDetailsPopup = ({
   };
 
   const changeCardTitle = () => {
+    checkCardAuth({ author: card.author });
+
     const newCardTitle = keyValueMap.get('cardTitle');
 
     if (newCardTitle) {
@@ -127,6 +131,7 @@ const CardDetailsPopup = ({
   };
 
   const deleteCard = () => {
+    checkCardAuth({ author: card.author });
     dispatch(removeCard({ id: card.id }));
     onPopupClose();
   };
@@ -136,11 +141,17 @@ const CardDetailsPopup = ({
   };
 
   const checkCommentAuth = (commentData: Pick<Comment, 'author' | 'id'>) => {
-    if (!currentUser) throw new Error('Status: 403');
+    if (!currentUser) throw new Error('Status: 401');
 
     if (currentUser.username !== commentData.author) {
       throw new Error('Status: 403');
     }
+  };
+  const checkCardAuth = (cardData: Pick<Card, 'author'>) => {
+    if (!currentUser) throw new Error('Status: 401');
+
+    if (currentUser.id !== cardData.author.userId)
+      throw new Error('Status: 403');
   };
   return isPopupVisible ? (
     <PopupWindow isVisible={isPopupVisible}>

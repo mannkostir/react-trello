@@ -11,6 +11,7 @@ export type Card = {
   listId: string;
   title: string;
   description?: string;
+  author: { userId: string; username: string };
 };
 
 export type Activity = {

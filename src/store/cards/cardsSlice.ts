@@ -32,12 +32,15 @@ export const cardsSlice = createSlice({
   name: 'cards',
   initialState: defaultCards,
   reducers: {
-    addCard(cards, action: PayloadAction<Pick<Card, 'listId' | 'title'>>) {
+    addCard(
+      cards,
+      action: PayloadAction<Pick<Card, 'listId' | 'title' | 'author'>>
+    ) {
       let uuid: string = createUUID();
 
-      const { listId, title } = action.payload;
+      const { listId, title, author } = action.payload;
 
-      cards.currentCards.push({ listId, title, id: uuid });
+      cards.currentCards.push({ listId, title, id: uuid, author });
 
       localStorage.setItem(RootStateKeys.CARDS_STATE, JSON.stringify(cards));
     },
