@@ -19,8 +19,6 @@ const Card = ({
   listTitle,
   currentUser,
 }: ICardData) => {
-  const dispatch = useDispatch();
-
   const [isPopupVisible, setIsPopupVisible] = useState(false);
 
   const togglePopup = () => setIsPopupVisible((isVisible) => !isVisible);

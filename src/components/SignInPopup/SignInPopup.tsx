@@ -17,7 +17,7 @@ interface ISignInPopupProps {
 
 const SignInPopup = ({
   isVisible = false,
-  signIn = ({ username = '', password = '' }) => {},
+  signIn,
   onClose,
 }: ISignInPopupProps) => {
   const { handleChange, keyValueMap } = useForm();

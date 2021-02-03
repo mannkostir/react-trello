@@ -31,7 +31,7 @@ const CardDetailsPopup = ({
   isCommentsLoading,
   isPopupVisible,
   currentUser,
-  onPopupClose = () => {},
+  onPopupClose,
 }: ICardDetailsData) => {
   const dispatch = useDispatch();
 
