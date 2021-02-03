@@ -6,6 +6,7 @@ import { useForm } from 'hooks/useForm';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store';
 import { addList, getState } from 'store/lists/listsSlice';
+import Spinner from 'components/Spinner';
 
 const BoardPageLists = () => {
   const state = useSelector((state: RootState) => state);
@@ -33,21 +34,32 @@ const BoardPageLists = () => {
 
   return (
     <div className={`${styles.lists} row`}>
-      {state.lists.isLoading
-        ? 'Loading lists...'
-        : state.lists.currentLists.map((list) => (
-            <div className={`${styles.list} col`} key={list.id}>
-              <CardsList
-                listTitle={list.title}
-                currentListId={list.id}
-                cards={state.cards.currentCards.filter(
-                  (card) => card.listId === list.id
-                )}
-                isCardsLoading={state.cards.isLoading}
-                currentUser={state.auth.currentUser}
-              />
-            </div>
-          ))}
+      {state.lists.isLoading ? (
+        <Spinner
+          style={{
+            position: 'fixed',
+            left: '50%',
+            top: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: '100px',
+            height: '100px',
+          }}
+        />
+      ) : (
+        state.lists.currentLists.map((list) => (
+          <div className={`${styles.list} col`} key={list.id}>
+            <CardsList
+              listTitle={list.title}
+              currentListId={list.id}
+              cards={state.cards.currentCards.filter(
+                (card) => card.listId === list.id
+              )}
+              isCardsLoading={state.cards.isLoading}
+              currentUser={state.auth.currentUser}
+            />
+          </div>
+        ))
+      )}
       <div className={`${styles.list} col`}>
         <div>
           {isAddingList ? (

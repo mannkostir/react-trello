@@ -9,6 +9,7 @@ import { addCard, getCards } from 'store/cards/cardsSlice';
 import { changeListTitle } from 'store/lists/listsSlice';
 import { RootState } from 'store';
 import { getComments } from 'store/comments/commentsSlice';
+import Spinner from 'components/Spinner';
 
 interface IListData {
   listTitle: string;
@@ -89,22 +90,24 @@ const CardsList = ({
         </div>
       </header>
       <div className={styles.cards}>
-        {isCardsLoading
-          ? 'Cards loading...'
-          : comments.isLoading
-          ? 'Comments loading...'
-          : cards.map((card, index) => (
-              <Card
-                listTitle={listTitle}
-                card={card}
-                key={index}
-                comments={comments.currentComments.filter(
-                  (comment) => comment.cardId === card.id
-                )}
-                isCommentsLoading={comments.isLoading}
-                currentUser={currentUser}
-              />
-            ))}
+        {isCardsLoading ? (
+          <Spinner style={{ marginLeft: '50px' }} />
+        ) : comments.isLoading ? (
+          'Comments loading...'
+        ) : (
+          cards.map((card, index) => (
+            <Card
+              listTitle={listTitle}
+              card={card}
+              key={index}
+              comments={comments.currentComments.filter(
+                (comment) => comment.cardId === card.id
+              )}
+              isCommentsLoading={comments.isLoading}
+              currentUser={currentUser}
+            />
+          ))
+        )}
       </div>
       <div>
         {isAddingCard ? (
