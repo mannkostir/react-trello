@@ -9,14 +9,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addUser } from 'store/users/usersSlice';
 import { createUUID } from 'utils/createUUID';
 import { signIn, signOut } from 'store/auth/authSlice';
-import makeServer from './mockServer';
 
 interface AuthCredentials {
   username: string;
   password: string;
 }
-
-makeServer();
 
 function App() {
   const state = useSelector((state: RootState) => ({

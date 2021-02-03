@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import * as types from 'types/BoardPage.types';
 import CardDetailsPopup from '../CardDetailsPopup';
 import styles from './Card.module.css';

@@ -5,7 +5,6 @@ import { Card, Comment, User } from 'types/BoardPage.types';
 import styles from './CardDetailsPopup.module.css';
 import addComponentStyles from 'styles/AddComponent.module.css';
 import { deleteCard, updateCard } from 'store/cards/cardsSlice';
-import { getComments } from 'store/comments/commentsSlice';
 import { useDispatch } from 'react-redux';
 import CardDescription from '../CardDescription';
 import CardCommentForm from '../CardCommentForm';
