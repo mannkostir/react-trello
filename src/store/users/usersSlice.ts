@@ -1,11 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootStateKeys } from 'constants/localStorageKeys';
 import { User } from 'types/BoardPage.types';
 import { UsersState } from 'types/store.types';
 
-export const defaultUsers: UsersState = localStorage.getItem('usersState')
-  ? JSON.parse(localStorage.getItem('usersState') || '')
-  : [];
+export const defaultUsers: UsersState = [];
 
 const usersSlice = createSlice({
   name: 'users',
@@ -13,8 +10,6 @@ const usersSlice = createSlice({
   reducers: {
     addUser(users, action: PayloadAction<User>) {
       users.push(action.payload);
-
-      localStorage.setItem(RootStateKeys.USERS_STATE, JSON.stringify(users));
     },
     removeUser(users, action: PayloadAction<User>) {
       const targetIndex = users.findIndex(
@@ -22,8 +17,6 @@ const usersSlice = createSlice({
       );
 
       users.splice(targetIndex, 1);
-
-      localStorage.setItem(RootStateKeys.USERS_STATE, JSON.stringify(users));
     },
   },
 });

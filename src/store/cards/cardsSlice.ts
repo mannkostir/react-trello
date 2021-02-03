@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootStateKeys } from 'constants/localStorageKeys';
-import { Card, User } from 'types/BoardPage.types';
+import { Card } from 'types/BoardPage.types';
 import { CardsState } from 'types/store.types';
 import { createUUID } from 'utils/createUUID';
 
@@ -11,15 +10,9 @@ export const defaultCards: CardsState = {
 
 export const getCards = createAsyncThunk('cards/getCards', async () => {
   const getCards = () =>
-    new Promise<CardsState>((resolve, reject) => {
+    new Promise<void>((resolve, reject) => {
       setTimeout(() => {
-        const state: CardsState = localStorage.getItem(
-          RootStateKeys.CARDS_STATE
-        )
-          ? JSON.parse(localStorage.getItem(RootStateKeys.CARDS_STATE)!)
-          : defaultCards;
-
-        resolve(state);
+        resolve();
       }, 2000);
     });
 
@@ -88,14 +81,13 @@ export const cardsSlice = createSlice({
       const { listId, title, author } = action.payload;
 
       cards.currentCards.push({ listId, title, id: uuid, author });
-
-      localStorage.setItem(RootStateKeys.CARDS_STATE, JSON.stringify(cards));
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(getCards.fulfilled, (cards, action) => {
-        return { ...action.payload, isLoading: false };
+        cards.isLoading = false;
+        return cards;
       })
       .addCase(getCards.pending, (cards, action) => {
         cards.isLoading = true;
@@ -111,8 +103,6 @@ export const cardsSlice = createSlice({
         };
 
         cards.currentCards[targetIndex].isLoading = false;
-
-        localStorage.setItem(RootStateKeys.CARDS_STATE, JSON.stringify(cards));
       })
       .addCase(updateCard.pending, (cards, action) => {
         const targetIndex = cards.currentCards.findIndex(
@@ -136,8 +126,6 @@ export const cardsSlice = createSlice({
         );
 
         cards.currentCards.splice(targetIndex, 1);
-
-        localStorage.setItem(RootStateKeys.CARDS_STATE, JSON.stringify(cards));
       })
       .addCase(deleteCard.pending, (cards, action) => {
         const targetIndex = cards.currentCards.findIndex(
