@@ -18,6 +18,7 @@ const Navbar = ({
 }: INavbarProps) => {
   return (
     <nav className={styles.mainNav}>
+      <span className={styles.username}>{currentUser?.username || null}</span>
       <div className={styles.authButtons}>
         {!currentUser?.id ? (
           <>
