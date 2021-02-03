@@ -1,0 +1,14 @@
+.comment {
+  margin-bottom: 15px;
+}
+.comment:last-child {
+  margin-bottom: 0;
+}
+.commentTextarea {
+  height: 32px;
+  margin-top: 20px;
+  transition: 0.2s ease;
+}
+.commentTextarea[data-isEditing='true'] {
+  height: 102px;
+}

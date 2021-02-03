@@ -1,0 +1,35 @@
+.activityTitle {
+  resize: none;
+  border: none;
+  height: 32px;
+  color: #172b4d;
+  font-weight: bold;
+  font-size: 20px;
+  overflow: hidden;
+}
+.activityList {
+  margin-top: 30px;
+  list-style: none;
+}
+.comment {
+  margin-bottom: 15px;
+}
+.comment:last-child {
+  margin-bottom: 0;
+}
+.commentAuthor {
+  font-weight: bold;
+}
+.commentContent {
+  resize: none;
+  background: #f4f4f4;
+}
+.commentActions > button {
+  background: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+.commentActions > button:hover {
+  text-decoration: underline;
+}

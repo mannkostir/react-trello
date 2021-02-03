@@ -33,58 +33,6 @@
 .listTitle {
   text-decoration: underline;
 }
-.descriptionTitle {
-  resize: none;
-  border: none;
-  height: 32px;
-  color: #172b4d;
-  font-weight: bold;
-  font-size: 20px;
-  overflow: hidden;
-}
-.activityTitle {
-  resize: none;
-  border: none;
-  height: 32px;
-  color: #172b4d;
-  font-weight: bold;
-  font-size: 20px;
-  overflow: hidden;
-}
-.activityList {
-  margin-top: 30px;
-  list-style: none;
-}
-.comment {
-  margin-bottom: 15px;
-}
-.comment:last-child {
-  margin-bottom: 0;
-}
-.commentTextarea {
-  height: 32px;
-  margin-top: 20px;
-  transition: 0.2s ease;
-}
-.commentTextarea[data-isEditing='true'] {
-  height: 102px;
-}
-.commentAuthor {
-  font-weight: bold;
-}
-.commentContent {
-  resize: none;
-  background: #f4f4f4;
-}
-.commentActions > button {
-  background: none;
-  border: none;
-  outline: none;
-  cursor: pointer;
-}
-.commentActions > button:hover {
-  text-decoration: underline;
-}
 .popupCloseBtn {
   position: absolute;
   right: 10px;

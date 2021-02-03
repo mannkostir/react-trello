@@ -1,0 +1,9 @@
+.descriptionTitle {
+  resize: none;
+  border: none;
+  height: 32px;
+  color: #172b4d;
+  font-weight: bold;
+  font-size: 20px;
+  overflow: hidden;
+}
