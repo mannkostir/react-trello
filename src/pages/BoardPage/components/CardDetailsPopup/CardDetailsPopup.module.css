@@ -24,7 +24,7 @@
   resize: none;
   border: none;
   height: 32px;
-  color: #172b4d;
+  color: #172b4d !important;
   font-weight: bold;
   font-size: 20px;
   overflow: hidden;

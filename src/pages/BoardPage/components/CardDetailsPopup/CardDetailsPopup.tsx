@@ -177,6 +177,7 @@ const CardDetailsPopup = ({
               onBlur={changeCardTitle}
               defaultValue={card.title}
               onClick={(e) => e.currentTarget.select()}
+              disabled={card.author.userId !== currentUser?.id}
             />
             <div>
               in list <span className={styles.listTitle}>{listTitle}</span>
@@ -222,7 +223,10 @@ const CardDetailsPopup = ({
               ) : (
                 <div
                   className={addComponentStyles.toggle}
-                  onClick={() => setIsAddingDescription(true)}
+                  onClick={() => {
+                    if (card.author.userId !== currentUser?.id) return;
+                    setIsAddingDescription(true);
+                  }}
                 >
                   {card.description
                     ? card.description
