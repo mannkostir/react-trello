@@ -11,7 +11,8 @@ export type Card = {
   listId: string;
   title: string;
   description?: string;
-  author: { userId: string; username: string };
+  readonly author: { userId: string; username: string };
+  isLoading?: boolean;
 };
 
 export type Activity = {

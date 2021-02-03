@@ -5,7 +5,7 @@ import { useInput } from 'hooks/useInput';
 import { Card, Comment, User } from 'types/BoardPage.types';
 import styles from './CardDetailsPopup.module.css';
 import addComponentStyles from 'styles/AddComponent.module.css';
-import { editCard, removeCard } from 'store/cards/cardsSlice';
+import { deleteCard, updateCard } from 'store/cards/cardsSlice';
 import {
   addComment,
   editComment,
@@ -70,11 +70,14 @@ const CardDetailsPopup = ({
   const handleDescriptionFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    checkCardAuth({ author: card.author });
-
     const newDescription = keyValueMap.get('cardDescription');
 
-    dispatch(editCard({ ...card, description: newDescription }));
+    dispatch(
+      updateCard({
+        newCard: { ...card, description: newDescription },
+        userId: currentUser?.id || null,
+      })
+    );
 
     setIsAddingDescription(false);
   };
@@ -126,13 +129,22 @@ const CardDetailsPopup = ({
     const newCardTitle = keyValueMap.get('cardTitle');
 
     if (newCardTitle) {
-      dispatch(editCard({ id: card.id, title: newCardTitle }));
+      dispatch(
+        updateCard({
+          newCard: { ...card, title: newCardTitle },
+          userId: currentUser?.id || null,
+        })
+      );
     }
   };
 
-  const deleteCard = () => {
-    checkCardAuth({ author: card.author });
-    dispatch(removeCard({ id: card.id }));
+  const removeCard = () => {
+    dispatch(
+      deleteCard({
+        cardData: { author: card.author, id: card.id },
+        userId: currentUser?.id || null,
+      })
+    );
     onPopupClose();
   };
 
@@ -178,7 +190,9 @@ const CardDetailsPopup = ({
           <div>
             <span className={styles.descriptionTitle}>Description</span>
             <div>
-              {isAddingDescription ? (
+              {card.isLoading ? (
+                'Loading...'
+              ) : isAddingDescription ? (
                 <form
                   className={addComponentStyles.form}
                   onSubmit={(e) => handleDescriptionFormSubmit(e)}
@@ -319,7 +333,7 @@ const CardDetailsPopup = ({
           <ul className={styles.cardActions}>
             <li
               className={`${styles.cardActionsItem} ${addComponentStyles.toggle}`}
-              onClick={deleteCard}
+              onClick={removeCard}
             >
               Delete Card
             </li>
