@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addCard, getCards } from 'store/cards/cardsSlice';
 import { changeListTitle } from 'store/lists/listsSlice';
 import { RootState } from 'store';
+import { getComments } from 'store/comments/commentsSlice';
 
 interface IListData {
   listTitle: string;
@@ -33,6 +34,7 @@ const CardsList = ({
 
   useEffect(() => {
     dispatch(getCards());
+    dispatch(getComments());
   }, []);
 
   const handleCardFormSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -89,6 +91,8 @@ const CardsList = ({
       <div className={styles.cards}>
         {isCardsLoading
           ? 'Cards loading...'
+          : comments.isLoading
+          ? 'Comments loading...'
           : cards.map((card, index) => (
               <Card
                 listTitle={listTitle}

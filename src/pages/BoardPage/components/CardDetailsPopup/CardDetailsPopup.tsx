@@ -35,10 +35,6 @@ const CardDetailsPopup = ({
   const { handleChange, keyValueMap } = useForm();
 
   useEffect(() => {
-    dispatch(getComments());
-  }, []);
-
-  useEffect(() => {
     const ifEscPressedAction = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         onPopupClose();
